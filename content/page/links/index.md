@@ -1,5 +1,6 @@
 ---
-title: 链接
+title: "链接"
+slug: "links"
 links:
   - title: GitHub
     description: Check my projects on GitHub
