@@ -14,3 +14,11 @@ url = "https://github.com/4o3F"
 
 [social.params]
 icon = "brand-github"
+
+[[social]]
+identifier = "rss"
+name = "RSS"
+url = "https://403f.cafe/index.xml"
+
+[social.params]
+icon = "rss"
