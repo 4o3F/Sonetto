@@ -20,7 +20,7 @@ subtitle = "Advance by fair means or foul."
 [sidebar.avatar]
 enabled = true
 local = true
-src = "img/avatar.jpeg"
+src = "img/avatar.jpg"
 
 [article]
 math = false
