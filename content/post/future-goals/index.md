@@ -12,6 +12,7 @@ tags:
     - dev
 ---
 > 一些未来想要实现的东西，灵感闪过，在此随笔一记
+## Projects
 
 ### Latex编辑器
 > Created: 2023/9/10  
@@ -19,3 +20,24 @@ tags:
 
 用Tauri 2和React/NextJS实现的桌面端Latex编辑器，尝试新的React前端技术栈，以及Tauri客户端技术栈  
 Flutter编写的客户端略微有点复杂，同时灵活性个人感觉没有Web端好，因而尝试下基于Web的客户端是十分有必要的
+
+## Games to be played
+
+- [x] 素晴日
+- [x] ever17
+- [x] remember11
+- [ ] BALDR SKY
+- [ ] 樱之诗
+- [ ] 苍之彼方的四重奏
+- [ ] 白色相簿2
+- [ ] Muv-Luv
+- [ ] 海猫鸣泣之时
+- [ ] 近月少女的礼仪
+- [ ] 脏翅膀
+- [ ] Rewrite
+- [ ] Flower
+- [ ] Island
+- [ ] Cross+Channel
+- [ ] G线上的魔王
+- [ ] Chaos;Child
+- [ ] Summer Pocket

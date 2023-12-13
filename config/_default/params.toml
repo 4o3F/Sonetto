@@ -134,7 +134,7 @@ category = "Announcements"
 categoryID = "DIC_kwDOJqjbvM4CW78f"
 mapping = "pathname"
 lightTheme = "light"
-darkTheme = "dark"
+darkTheme = "noborder_gray"
 reactionsEnabled = 1
 emitMetadata = 0
 
