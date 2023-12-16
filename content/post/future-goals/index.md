@@ -39,5 +39,5 @@ Flutter编写的客户端略微有点复杂，同时灵活性个人感觉没有W
 - [ ] Island
 - [ ] Cross+Channel
 - [ ] G线上的魔王
-- [ ] Chaos;Child
+- [x] Chaos;Child 2023/12/16
 - [ ] Summer Pocket
