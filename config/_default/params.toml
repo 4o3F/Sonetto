@@ -23,7 +23,7 @@ local = true
 src = "img/avatar.jpg"
 
 [article]
-math = false
+math = true
 readingTime = false
 
 [article.license]
