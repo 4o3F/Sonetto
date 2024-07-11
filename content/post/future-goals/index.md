@@ -43,3 +43,4 @@ Flutter编写的客户端略微有点复杂，同时灵活性个人感觉没有W
 - [x] G线上的魔王
 - [x] Chaos;Child 2023/12/16
 - [ ] Summer Pocket
+- [ ] 金辉恋曲四重奏
