@@ -17,6 +17,6 @@ disqusShortname = "sonetto"
 
 googleAnalytics = "G-3PB5N8JWJS"
 
-[imaging]
-resampleFilter = "lanczos"
-quality = 100
+#[imaging]
+#resampleFilter = "lanczos"
+#quality = 100
