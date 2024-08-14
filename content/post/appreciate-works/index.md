@@ -3,7 +3,7 @@ title: 一些值得一看的作品
 description: Some works that deserve appreciation
 slug: appreciate-works
 date: 2023-10-01 00:00:00+0000
-image: cover.png
+image: cover.jpg
 categories:
     - daily
 tags:
@@ -81,6 +81,9 @@ tags:
 ### Ever17
 一生只能欣赏一次的悬疑系作品，皇冠上的明珠  
 耐住性子看过前半部分看到结尾，会想把自己打失忆重新欣赏一遍的
+
+### Muv-Luv
+燃泣系巅峰之作，连着花了3天推完，绝佳的演出效果，虽然最后结尾有些仓促但绝对是佳作
 
 ### 十三机兵防卫圈
 多线叙事的顶尖作品，对于故事多视角的切换、整体逻辑连接做到了无与伦比的高度，

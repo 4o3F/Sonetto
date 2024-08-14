@@ -3,7 +3,7 @@ title: 一些未来要做的事
 description: Some future goals
 slug: future-goals
 date: 2024-07-11 00:00:00+0000
-image: cover.jpeg
+image: cover.jpg
 categories:
     - daily
     - dev

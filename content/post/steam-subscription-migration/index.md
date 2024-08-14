@@ -3,7 +3,7 @@ title: Steam订阅迁移
 description: 记录Steam订阅迁移的办法
 slug: steam-subscription-migration
 date: 2023-08-30 00:00:00+0000
-image: cover.png
+image: cover.jpg
 categories:
     - dev
 tags:
@@ -17,7 +17,7 @@ tags:
 # 获取所有订阅ID
 ## 进入订阅列表页面
 首先是登录Steam，进入个人资料页面，类似下图我的
-![个人资料页面](personal-page.png)
+![个人资料页面](personal-page.jpg)
 然后在URL后面加上
 ```text
 myworkshopfiles/?appid=431960&browsefilter=mysubscriptions&p=1&numperpage=30
