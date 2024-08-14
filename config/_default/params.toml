@@ -14,7 +14,7 @@ published = "Jan 02, 2006"
 lastUpdated = "Jan 02, 2006 15:04 MST"
 
 [sidebar]
-emoji = "🐟"
+emoji = ""
 subtitle = "Advance by fair means or foul."
 
 [sidebar.avatar]
@@ -24,7 +24,7 @@ src = "img/avatar.jpg"
 
 [article]
 math = true
-readingTime = false
+readingTime = true
 
 [article.license]
 enabled = true
