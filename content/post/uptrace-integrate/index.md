@@ -3,6 +3,7 @@ title: 将UpTrace整合进现有遗留业务系统
 description: 将UpTrace追踪监控无侵入地整合进一个7年前的复杂系统中
 slug: uptrace-integrate
 date: 2024-07-20 00:00:00+0000
+lastmod: 2024-08-14 00:00:00+0000
 image: cover.jpg
 categories:
   - intern
