@@ -126,10 +126,10 @@ pipeline {
                                 def warFile = sh(script: 'ls target/*.war 2>/dev/null', returnStdout: true).trim()
                                 sshPut remote: remote, from: warFile, into: '/usr/local/deploy/server.war'
                             }
-                            stage("Upload new WAR package") {
+                            stage("Start up Tomcat") {
                                 sshCommand remote:remote, command: 'bash /usr/local/deploy/start.sh'
                             }
-                            stage("Check tomcat startup status") {
+                            stage("Check Tomcat startup status") {
                                 sshCommand remote:remote, command: 'bash /usr/local/deploy/check.sh'
                             }
                         }
