@@ -179,6 +179,19 @@ TIMEOUT=300  # 5分钟
 CHECK_INTERVAL=10  # 每10秒检查一次
 elapsed_time=0
 
+# 等待日志文件被创建
+while [ ! -f "$LOG_FILE" ]; do
+    echo "日志文件 $LOG_FILE 不存在，等待创建..."
+    sleep $CHECK_INTERVAL
+    elapsed_time=$((elapsed_time + CHECK_INTERVAL))
+
+    # 如果超过超时时间，退出
+    if [ $elapsed_time -ge $TIMEOUT ]; then
+        echo "错误：在$TIMEOUT秒内未创建日志文件 $LOG_FILE。"
+        exit 1
+    fi
+done
+
 # 获取日志文件的最后一行
 last_position=$(wc -l < "$LOG_FILE")
 
