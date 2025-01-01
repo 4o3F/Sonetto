@@ -64,6 +64,7 @@ tags:
     sudo loginctl terminate-user $USERNAME
     sudo /etc/init.d/gdm3 restart
     ```
+8. 需要注意封榜需要走CDS，直接从DomJudge API拉无法处理封榜问题。
 
 ### 管理方面
 
