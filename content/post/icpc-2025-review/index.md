@@ -99,7 +99,7 @@ export default function () {
 2. DomJudge的导入写的实在是无语，要是用JSON的话，所属学校需要分开导入，而使用TSV导入的话又会为同样名字的学校创建多个，同时还不会自动分配External ID，导致只要点进去查看就直接500，真😑了。
 3. 导入team的时候，使用TSV无法导入location字段，同时account的JSON导入还有毛病，无法解析，因此只能导入后直接草库，也很麻，这地方之后肯定是要做修改的，可能得写个程序来导入吧，直接解析Excel表格。
 4. 为了避免Team001这种登录名和原本ID为1的管理员账户冲突，需要在Configuration中设置Data Source为External，而不能只是local。 
-5. 有几个设置需要打开，`Display`中的`Show teams submissions`，`Authentication`中要添加`xheader`。 
+5. 有几个设置需要打开，`Display`中的`Allow team submission download`，`Authentication`中要添加`xheader`。 
 6. 需要修改php-fpm配置中的max_child，不然的话服务器处理不了太多的请求。 
 7. 打印用的服务器端相关脚本如下所示，但是由于enscript无法处理utf-8字符，因此中文都会是乱码，需要进一步修改，同时有的队伍把编译后的ELF文件提交了.....打了好几百页出来，需要进一步限制前10页，下面的代码仅仅做个备份，之后肯定得改。
 
