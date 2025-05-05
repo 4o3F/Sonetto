@@ -1,6 +1,6 @@
 ---
-title: ICPC 西安邀请赛 2024 办赛总结&备忘录
-description: 总结下此次ICPC 西安邀请赛办赛中遇到的问题以及潜在改进方法
+title: ICPC 西安邀请赛 2025 办赛总结&备忘录
+description: 总结下此次ICPC西安邀请赛办赛中遇到的问题以及潜在改进方法
 slug: icpc-2025-review
 date: 2025-05-05 16:00:00+0800
 image: cover.jpg
