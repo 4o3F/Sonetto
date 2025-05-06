@@ -251,6 +251,14 @@ error_log /var/log/nginx/domjudge.log;
 access_log /var/log/nginx/domjudge.log;
 ```
 
+### Parallel-SSH命令
+
+SSH会进行public key fingerprint验证，所以需要额外添加参数。IP列表可以从Natsume中下载。
+
+```shell
+parallel-ssh -t 6000 -p 1000 -h ips_all.txt -l "root" -x "-i ./privatekey -o 'StrictHostKeyChecking no'"  'natsume_client session terminate'
+```
+
 ### 打印代码备份
 之后改得话应该得把enscript换掉，换一个直接一步出PDF的
 ```python
