@@ -96,11 +96,13 @@ export default function () {
 1. 注意DomJudge
    8.3.1版本对于Submission的数据库限制有问题，需要参考[https://github.com/DOMjudge/domjudge/tree/main/webapp/migrations](https://github.com/DOMjudge/domjudge/tree/main/webapp/migrations)
    中的相关migration script进行修改。
-2. DomJudge的导入写的实在是无语，要是用JSON的话，所属学校需要分开导入，而使用TSV导入的话又会为同样名字的学校创建多个，同时还不会自动分配External ID，导致只要点进去查看就直接500，真😑了。
+2. DomJudge的导入写的实在是无语，要是用JSON的话，所属学校需要分开导入，而使用TSV导入的话又会为同样名字的学校创建多个，同时还不会自动分配External
+   ID，导致只要点进去查看就直接500，真😑了。(Update:
+   注意TSV导入的时候第八列应当手动设置而不能为null，对所有的学校排序并去重，然后给予其一个ID，不然的话externalid会变成null，导致DomJudge无法对affiliation去重不生效，且后续的校验过不去出现500)
 3. 导入team的时候，使用TSV无法导入location字段，同时account的JSON导入还有毛病，无法解析，因此只能导入后直接草库，也很麻，这地方之后肯定是要做修改的，可能得写个程序来导入吧，直接解析Excel表格。
-4. 为了避免Team001这种登录名和原本ID为1的管理员账户冲突，需要在Configuration中设置Data Source为External，而不能只是local。 
-5. 有几个设置需要打开，`Display`中的`Allow team submission download`，`Authentication`中要添加`xheader`。 
-6. 需要修改php-fpm配置中的max_child，不然的话服务器处理不了太多的请求。 
+4. 为了避免Team001这种登录名和原本ID为1的管理员账户冲突，需要在Configuration中设置Data Source为External，而不能只是local。
+5. 有几个设置需要打开，`Display`中的`Allow team submission download`，`Authentication`中要添加`xheader`。
+6. 需要修改php-fpm配置中的max_child，不然的话服务器处理不了太多的请求。
 7. 打印用的服务器端相关脚本如下所示，但是由于enscript无法处理utf-8字符，因此中文都会是乱码，需要进一步修改，同时有的队伍把编译后的ELF文件提交了.....打了好几百页出来，需要进一步限制前10页，下面的代码仅仅做个备份，之后肯定得改。
 
 ### 选手机自动化
@@ -108,7 +110,8 @@ export default function () {
 提前写了个集成了绝大部分选手机上操作的自动化程序，大部分的流程都可以直接参考README.md，可见[这个GitHub仓库](https://github.com/4o3F/Natsume)，
 已经涵盖了自动设置反代，解锁/锁定用户，重置用户数据，绑定座位号，同步账号密码。
 
-**`configure_client.sh`在用于更新`natsume_client`的时候，`parallel-ssh`一定一定要把timeout开到很大，不然的话容易直接在下载publickey的时候就超时，然后就寄了，手动一个个修回来吧**
+**`configure_client.sh`在用于更新`natsume_client`的时候，`parallel-ssh`
+一定一定要把timeout开到很大，不然的话容易直接在下载publickey的时候就超时，然后就寄了，手动一个个修回来吧**
 
 ### 外榜缓存
 
@@ -260,7 +263,9 @@ parallel-ssh -t 6000 -p 1000 -h ips_all.txt -l "root" -x "-i ./privatekey -o 'St
 ```
 
 ### 打印代码备份
+
 之后改得话应该得把enscript换掉，换一个直接一步出PDF的
+
 ```python
 import sys
 import subprocess
@@ -436,6 +441,21 @@ def main():
 if __name__ == "__main__":
     main()
 ```
+
+paps安装
+
+```shell
+apt-get install meson cmake libfmt-dev pkg-config build-essential libpango1.0-dev libpaper-dev
+meson build
+cd build && ninja
+```
+
+paps plaintext to pdf，输出在stdout中
+
+```shell
+paps --header --header-left=[location] --format=pdf [file]
+```
+
 最后留张此次比赛的壁纸，我还是很喜欢的😝
 
 ![wallpaper](wallpaper.jpg)
