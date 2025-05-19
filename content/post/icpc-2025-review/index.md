@@ -456,6 +456,29 @@ paps plaintext to pdf，输出在stdout中
 paps --header --header-left=[location] --format=pdf [file]
 ```
 
+### 一些其他代码备份
+
+#### Excel随机密码生成
+1. Excel `alt+f11`
+2. 插入->模块
+3. ```VisualBasic
+   Function RandomPassword(length As Integer) As String
+    Dim chars As String
+    Dim i As Integer
+    Dim result As String
+    
+    chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
+    result = ""
+    
+    For i = 1 To length
+        result = result & Mid(chars, Int(Rnd() * Len(chars)) + 1, 1)
+    Next i
+    
+    RandomPassword = result
+   End Function
+   ```
+4. `=RandomPassword(12)`
+
 最后留张此次比赛的壁纸，我还是很喜欢的😝
 
 ![wallpaper](wallpaper.jpg)
