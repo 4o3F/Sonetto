@@ -104,6 +104,7 @@ export default function () {
 5. 有几个设置需要打开，`Display`中的`Allow team submission download`，`Authentication`中要添加`xheader`。
 6. 需要修改php-fpm配置中的max_child，不然的话服务器处理不了太多的请求。
 7. 打印用的服务器端相关脚本如下所示，但是由于enscript无法处理utf-8字符，因此中文都会是乱码，需要进一步修改，同时有的队伍把编译后的ELF文件提交了.....打了好几百页出来，需要进一步限制前10页，下面的代码仅仅做个备份，之后肯定得改。
+8. 注意导入accounts.tsv的时候，他只考虑整数部分，因此手动写一个直接调用API来导入team和accounts并关联，同时还能处理affiliation的程序或许是个更好的选择。
 
 ### 选手机自动化
 
