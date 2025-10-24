@@ -343,3 +343,185 @@ done
 
 热身赛完事后，俩人全都一门心思在保证正赛别崩上，俩人谁都没搞过滚榜，也都没看出来Unfreeze Time不对🤦‍♂️，导致一结束直接放榜了，下回注意直接不设置Unfreeze Time就好了，
 滚榜的话就看之后重新写一个解析程序来搞吧，Resolver实在是太难用了，很难想象一个最新稳定版没有之前版本兼容性强的程序.......
+
+
+## 后续优化
+### 优化PHP Session储存
+
+检查PHP FPM Slowlog，可见如下
+```
+[19-Oct-2025 06:22:30]  [pool domjudge] pid 494122
+script_filename = /opt/domjudge/domserver/webapp/public/index.php
+[0x000075337d813fc0] execute() /opt/domjudge/domserver/lib/vendor/symfony/http-foundation/Session/Storage/Handler/PdoSessionHandler.php:631
+[0x000075337d813ee0] doRead() /opt/domjudge/domserver/lib/vendor/symfony/http-foundation/Session/Storage/Handler/AbstractSessionHandler.php:69
+[0x000075337d813e40] read() /opt/domjudge/domserver/lib/vendor/symfony/http-foundation/Session/Storage/Handler/PdoSessionHandler.php:297
+[0x000075337d813dc0] read() /opt/domjudge/domserver/lib/vendor/symfony/http-foundation/Session/Storage/Handler/AbstractSessionHandler.php:49
+[0x000075337d813d40] validateId() /opt/domjudge/domserver/lib/vendor/symfony/http-foundation/Session/Storage/Proxy/SessionHandlerProxy.php:69
+[0x000075337d813cc0] validateId() /opt/domjudge/domserver/lib/vendor/symfony/http-foundation/Session/Storage/NativeSessionStorage.php:172
+[0x000075337d813c70] session_start() /opt/domjudge/domserver/lib/vendor/symfony/http-foundation/Session/Storage/NativeSessionStorage.php:172
+[0x000075337d813bc0] start() /opt/domjudge/domserver/lib/vendor/symfony/http-foundation/Session/Storage/NativeSessionStorage.php:311
+[0x000075337d813b40] getBag() /opt/domjudge/domserver/lib/vendor/symfony/http-foundation/Session/Session.php:222
+[0x000075337d813ab0] getBag() /opt/domjudge/domserver/lib/vendor/symfony/http-foundation/Session/Session.php:242
+[0x000075337d813a50] getAttributeBag() /opt/domjudge/domserver/lib/vendor/symfony/http-foundation/Session/Session.php:69
+[0x000075337d8139d0] get() /opt/domjudge/domserver/lib/vendor/symfony/security-http/Firewall/ContextListener.php:98
+[0x000075337d8138d0] authenticate() /opt/domjudge/domserver/lib/vendor/symfony/security-http/Firewall/AbstractListener.php:26
+[0x000075337d813850] __invoke() /opt/domjudge/domserver/lib/vendor/symfony/security-http/Firewall.php:128
+[0x000075337d8137b0] callListeners() /opt/domjudge/domserver/lib/vendor/symfony/security-http/Firewall.php:95
+[0x000075337d8136c0] onKernelRequest() /opt/domjudge/domserver/lib/vendor/symfony/event-dispatcher/EventDispatcher.php:260
+[0x000075337d8135f0] Symfony\Component\EventDispatcher\{closure}() /opt/domjudge/domserver/lib/vendor/symfony/event-dispatcher/EventDispatcher.php:220
+[0x000075337d813530] callListeners() /opt/domjudge/domserver/lib/vendor/symfony/event-dispatcher/EventDispatcher.php:56
+[0x000075337d813480] dispatch() /opt/domjudge/domserver/lib/vendor/symfony/http-kernel/HttpKernel.php:157
+[0x000075337d8133a0] handleRaw() /opt/domjudge/domserver/lib/vendor/symfony/http-kernel/HttpKernel.php:76
+```
+可见`PdoSessionHandler`处有大量的Slowlog，进一步分析可见PHP session全部存在了MariaDB中，导致所有登录的选手一次请求至少有两次读取数据库操作，
+进而大幅增加了数据库负载，由于Symfony可以直接换Redis作为Session Store，完全不理解为什么要拿数据库存会话，甚至拿文件存都要比数据库好得多。因此切换成Redis作为会话存储
+```
+sudo apt-get install php-redis redis-server
+systemctl restart php8.3-fpm
+```
+
+然后修改`webapp/config/services.yaml`
+
+```yaml
+# This file is the entry point to configure your own services.
+# Files in the packages/ subdirectory configure your dependencies.
+
+# Put parameters here that don't need to change on each machine where the app is deployed
+# https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
+imports:
+    - { resource: static.yaml }
+
+parameters:
+    locale: en
+    # Enable this to support removing time intervals from the contest.
+    # This code is rarely tested and we discourage using it.
+    removed_intervals: false
+    # Minimum password length for users
+    min_password_length: 10
+
+services:
+    # default configuration for services in *this* file
+    _defaults:
+        autowire: true      # Automatically injects dependencies in your services.
+        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+
+    # makes classes in src/ available to be used as services
+    # this creates a service per class whose id is the fully-qualified class name
+    App\:
+        resource: '../src/'
+        exclude:
+            - '../src/DependencyInjection'
+            - '../src/Entity'
+            - '../src/Migrations'
+            - '../src/Kernel.php'
+    
+    # 添加下面的部分
+    Redis:
+        class: Redis
+        calls:
+            - connect: ['127.0.0.1', 6379]
+
+    Symfony\Component\HttpFoundation\Session\Storage\Handler\RedisSessionHandler:
+        arguments: ['@Redis']
+        public: true
+
+    session.handler.redis:
+        alias: Symfony\Component\HttpFoundation\Session\Storage\Handler\RedisSessionHandler
+        public: true
+```
+
+修改`webapp/config/packages/framework.yaml`
+
+```yaml
+# see https://symfony.com/doc/current/reference/configuration/framework.html
+framework:
+    secret: '%env(APP_SECRET)%'
+    esi: false
+    fragments: false
+    http_method_override: true
+    annotations: false
+    handle_all_throwables: true
+    serializer:
+        enabled: true
+        name_converter: serializer.name_converter.camel_case_to_snake_case
+
+    # Enables session support. Note that the session will ONLY be started if you read or write from it.
+    # Remove or comment this section to explicitly disable session support.
+    session:
+        # 修改此处
+        # handler_id: "%env(DATABASE_URL)%"
+        handler_id: 'session.handler.redis'
+        cookie_secure: auto
+        cookie_samesite: lax
+        storage_factory_id: session.storage.factory.native
+
+    php_errors:
+        log: true
+
+    assets:
+        version: "v=%domjudge.version%"
+
+when@test:
+    framework:
+        test: true
+        session:
+            storage_factory_id: session.storage.factory.mock_file
+```
+上述修改完成后不会直接生效，需要在Symfony Console中清理缓存，注意版本会影响console位置
++ 对于DomJudge 8.3.2执行`php webapp/bin/console cache:clear`
++ 对于DomJudge 9.0.0执行`php bin/dj_console cache:clear`
+
+### 优化宽带尖峰
+
+赛间监控可见服务器宽带有大量的尖峰，后续分析可见，一次榜单的请求就有大约9MB的数据被传输，服务器是千兆宽带9MB一次请求再加上并发是一个很恐怖的量了，
+因此需要给Nginx配置一下Botli压缩。
+
+先下载Nginx的源码并编译依赖
+```shell
+apt source nginx && apt build-dep nginx
+```
+
+然后拉取Botli的源码
+```shell
+git clone --depth=1 https://github.com/google/ngx_brotli.git
+```
+
+接下来为了优化速度可以修改`.gitmodules`内的子模块地址，改成镜像进而加速拉取。
+```shell
+git submodule update --init
+```
+然后返回到nginx的源码目录并执行
+```shell
+./configure --with-compat --add-dynamic-module=../ngx_brotli && make modules
+```
+注意`ngx_brotli`为刚刚拉取的源码的路径。
+
+接下来看一下`/usr/lib/nginx/modules/`这个路径有没有，没有的话新建，然后把编译好的`objs/*.so`复制过去
+```shell
+cp objs/*.so /usr/share/nginx/modules/
+```
+
+然后把模块加载进去，修改`/etc/nginx/nginx.conf`，在`http`块外面添加
+```
+load_module modules/ngx_http_brotli_filter_module.so;
+load_module modules/ngx_http_brotli_static_module.so;
+```
+
+接着修改Nginx的配置，在server块中添加如下部分
+```
+server {
+        listen 80;
+        listen [::]:80;
+        brotli            on;
+        brotli_static     on;
+        brotli_comp_level 6;
+
+        # If you are reading from the event feed, make sure this is large enough.
+        # If you have a slow event feed reader, nginx needs to keep the connection
+        # open long enough between two write operations
+        send_timeout 36000s;
+        include /opt/domjudge/domserver/etc/nginx-conf-inner;
+}
+```
+
+这样便可以直接把9MB的HTML页面压缩到1MB以下，大幅降低宽带压力
