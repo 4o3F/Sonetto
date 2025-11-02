@@ -26,13 +26,20 @@ sudo pecl install opentelemetry
 ```ini
 [opentelemetry]
 extension=opentelemetry.so
-OTEL_PHP_AUTOLOAD_ENABLED="true"
-OTEL_SERVICE_NAME=your-service-name
-OTEL_TRACES_EXPORTER=otlp
-OTEL_EXPORTER_OTLP_PROTOCOL=http/protobuf
-OTEL_EXPORTER_OTLP_ENDPOINT="https://otlp.uptrace.dev"
-OTEL_EXPORTER_OTLP_HEADERS="uptrace-dsn=https://<token>@api.uptrace.dev?grpc=4317"
 ```
+
+然后在PHP FPM domjudge池的配置文件里添加如下环境变量
+```
+env[OTEL_PHP_AUTOLOAD_ENABLED] = "true"
+env[OTEL_SERVICE_NAME] = "domjudge-web"
+env[OTEL_TRACES_EXPORTER] = "otlp"
+env[OTEL_EXPORTER_OTLP_PROTOCOL] = "http/protobuf"
+env[OTEL_EXPORTER_OTLP_TRACES_ENDPOINT] = "https://api.uptrace.dev/v1/traces"
+env[OTEL_EXPORTER_OTLP_HEADERS] = "uptrace-dsn=https://oYGpL7xyKhFC7dPaYSktbA@api.uptrace.dev"
+env[OTEL_LOG_LEVEL] = "debug"
+env[OTEL_PHP_LOG_DESTINATION] = "error_log"
+```
+
 检查配置文件是否正确，并重启fpm服务
 ```shell
 php-fpm<version> -t
@@ -40,7 +47,7 @@ systemctl restart php<version>-fpm
 ```
 
 ## 安装对应的composer包
-接下来导航到解压后的DomJudge release包下，然后添加instrument-installer，注意要--no-scripts因为默认会加载数据库相关的程序，我们不需要那些
+接下来导航到解压后的DomJudge release包下（注意是还没到/opt下的未安装的路径），然后添加instrument-installer，注意要--no-scripts因为默认会加载数据库相关的程序，我们不需要那些
 ```shell
 composer require open-telemetry/opentelemetry-instrumentation-installer -vvv --no-scripts
 ```
@@ -69,7 +76,7 @@ execute_command('composer update --no-interaction', ' ');
 ```
 
 之后便可以执行安装了，这里建议使用`advanced`模式安装，可以自由选择。  
-注意这里安装的并不全，要想监控数据库数据的话还需要`open-telemetry/opentelemetry-auto-doctrine`但这个包目前版本要求有问题，我发了PR等等看，后续我会更新的。
+注意这里安装的并不全，要想监控数据库数据的话还需要`open-telemetry/opentelemetry-auto-doctrine`~~但这个包目前版本要求有问题，我发了PR等等看，后续我会更新的~~，已修复。
 
 安装完成后我们需要手动更新需要的依赖，注意symfony-client需要手动修版本使其和DomJudge的匹配，不然update过不去。
 ```shell
@@ -83,6 +90,8 @@ sudo ./lib/vendor/bin/install-otel-instrumentation advanced
 + 接下来会询问是否安装`open-telemetry/opentelemetry-auto-symfony`，选择是
 + `pdo`的部分需要php版本高于8.2才可以
 + `laravel`,`wordpress`,`slim`这些都不需要
+
+然后要把`webapp`以及`lib/vendor`挪到安装目录下覆盖原始文件
 
 ## 非全新安装添加
 
