@@ -527,3 +527,118 @@ server {
 这样便可以直接把9MB的HTML页面压缩到1MB以下，大幅降低宽带压力。
 
 后面又配上了Open Telemetry并重新Profile了一下，得出结论DomJudge写的实在是太烂，所有地方都会是瓶颈，优化得不偿失不如重写。
+
+### 优化代码
+
+可以拿Xdebug进行一下profile，如下图是profile后的public榜单页面耗时
+
+![profile1](profile/1.png)
+
+可见一个`getConfig`竟然花费了30%以上的时间，而且其中的`array_map`竟然也花费了很长时间，去看代码可见如下
+
+```php
+    public function getConfigSpecification(): array
+    {
+        // We use Symfony resource caching so we can load the config on every
+        // request without having a performance impact.
+        // See https://symfony.com/doc/4.3/components/config/caching.html for
+        // more information.
+        $cacheFile = $this->cacheDir . '/djDbConfig.php';
+        $this->configCache->cache($cacheFile,
+            function (ConfigCacheInterface $cache) {
+                // @codeCoverageIgnoreStart
+                $yamlDbConfigFile = $this->etcDir . '/db-config.yaml';
+                $fileLocator      = new FileLocator($this->etcDir);
+                $loader           = new YamlConfigLoader($fileLocator);
+                $yamlConfig       = $loader->load($yamlDbConfigFile);
+
+                // We first modify the data such that it contains the category as a field,
+                // since requesting data is faster in that case.
+                $config = [];
+                foreach ($yamlConfig as $category) {
+                    foreach ($category['items'] as $item) {
+                        $config[$item['name']] = $item + ['category' => $category['category']];
+                    }
+                }
+
+                $code          = var_export($config, true);
+                $specification = <<<EOF
+<?php
+
+return {$code};
+EOF;
+
+                $cache->write($specification,
+                    [new FileResource($yamlDbConfigFile)]);
+                // @codeCoverageIgnoreEnd
+            });
+        return array_map(
+            fn(array $item) => ConfigurationSpecification::fromArray($item),
+            require $cacheFile
+        );
+    }
+```
+
+无语好吧，这每次都要重新构建一次对象，那开销能不大么。怪不得压力测试的时候如下所示
+
+![stress_test1](stress_test/1.png)
+
+直接让其在生成缓存的时候就是对应的对象，修改如下
+
+```php
+    public function getConfigSpecification(): array
+    {
+        // We use Symfony resource caching so we can load the config on every
+        // request without having a performance impact.
+        // See https://symfony.com/doc/4.3/components/config/caching.html for
+        // more information.
+        $cacheFile = $this->cacheDir . '/djDbConfig.php';
+        $this->configCache->cache($cacheFile,
+            function (ConfigCacheInterface $cache) {
+                // @codeCoverageIgnoreStart
+                $yamlDbConfigFile = $this->etcDir . '/db-config.yaml';
+                $fileLocator      = new FileLocator($this->etcDir);
+                $loader           = new YamlConfigLoader($fileLocator);
+                $yamlConfig       = $loader->load($yamlDbConfigFile);
+
+                // We first modify the data such that it contains the category as a field,
+                // since requesting data is faster in that case.
+                $config = [];
+                foreach ($yamlConfig as $category) {
+                    foreach ($category['items'] as $item) {
+//                        $config[$item['name']] = $item + ['category' => $category['category']];
+                        $config[$item['name']] = ConfigurationSpecification::fromArray(
+                                $item + ['category' => $category['category']]
+                        );
+                    }
+                }
+
+                $code          = var_export(serialize($config), true);
+                $specification = <<<EOF
+<?php
+
+return unserialize({$code});
+EOF;
+
+                $cache->write($specification,
+                    [new FileResource($yamlDbConfigFile)]);
+                // @codeCoverageIgnoreEnd
+            });
+
+//        return array_map(
+//            fn(array $item) => ConfigurationSpecification::fromArray($item),
+//            require $cacheFile
+//        );
+        return require $cacheFile;
+    }
+```
+
+再重新用k6进行压力测试，如下所示
+
+![stress_test2](stress_test/2.png)
+
+可见所有指标均显著下降，重新profile如下图所示
+
+![profile2](profile/2.png)
+
+`assetPath`那个问题已经有一个PR在修了，在此不多赘述。
