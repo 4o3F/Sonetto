@@ -29,7 +29,7 @@ slow_query_log_file=/var/log/mysql_slow.log
 ```
 
 5. Install redis, switch session to redis according
-   to [this blog post](http://localhost:1313/p/icpc-2025-regional-review/#%E4%BC%98%E5%8C%96php-session%E5%82%A8%E5%AD%98)
+   to [this blog post](http://403f.cafe/p/icpc-2025-regional-review/#%E4%BC%98%E5%8C%96php-session%E5%82%A8%E5%AD%98)
 
 # JudgeHost Deployment
 
