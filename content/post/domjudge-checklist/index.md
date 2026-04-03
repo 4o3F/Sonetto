@@ -266,6 +266,8 @@ location / {
 #}
 
 location @domjudgeFront {
+        sub_filter_once off;
+        sub_filter 'href="/team/scoreboard"' 'href="/team/scoreboard" target="_blank"';
         fastcgi_split_path_info ^(.+\.php)(/.*)$;
         fastcgi_pass domjudge;
         include fastcgi_params;
