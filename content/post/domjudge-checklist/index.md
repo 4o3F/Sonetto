@@ -26,6 +26,11 @@ innodb_log_file_size=10GB
 max_allowed_packet=2GB
 slow_query_log=1
 slow_query_log_file=/var/log/mysql_slow.log
+net_read_timeout = 7200
+net_write_timeout = 7200
+
+[mysqldump]
+max_allowed_packet = 1G
 ```
 
 5. Install redis, switch session to redis according
@@ -148,7 +153,7 @@ chown -R www-data:www-data /var/cache/nginx/domjudge
 6. Edit `/opt/domjudge/domserver/etc/nginx-conf-inner`, it should become like the following
 
 ```
-# Generated from 'nginx-conf-inner.in' on Mon Mar  2 10:51:28 AM UTC 2026.
+# Generated from 'nginx-conf-inner.in' on Fri Apr  3 08:16:46 AM UTC 2026.
 
 # inner nginx configuration for DOMjudge
 # This is in a separate file to not have duplicate config
@@ -166,7 +171,9 @@ set $domjudgeRoot /opt/domjudge/domserver/webapp/public;
 # Set this to '' instead of /domjudge when running in the root of your system
 set $prefix '';
 
-# /team/scoreboard -> cached /public?static=true (avoid hammering PHP-FPM)
+# Disallow opening .php files directly
+location ~ ^/+[^/]+\.php$ { return 404; }
+
 location = /team/scoreboard {
         limit_except GET HEAD { deny all; }
 
@@ -184,6 +191,8 @@ location = /team/scoreboard {
 
         fastcgi_param SERVER_NAME $host;
         fastcgi_param HTTPS $fastcgi_param_https_variable;
+
+        fastcgi_param HTTP_X_REQUESTED_WITH "";
 
         fastcgi_cache dj_scoreboard;
 
@@ -208,7 +217,8 @@ location = /team/scoreboard {
 
 location / {
         root $domjudgeRoot;
-        location = /status/fpm {
+
+        location = /monitor/fpm {
                 access_log off;
         
                 include fastcgi_params;
@@ -224,8 +234,8 @@ location / {
                 fastcgi_pass domjudge;
         }
         
-        location ^~ /status/ {
-                alias /opt/domjudge/status/;
+        location ^~ /monitor/ {
+                alias /opt/monitor/;
                 index index.php index.html;
 
                 try_files $uri $uri/ =404;
@@ -241,9 +251,10 @@ location / {
                 fastcgi_pass domjudge;
                 }
         }
+
         try_files $uri @domjudgeFront;
 
-# Handle API requests separately to be able to split the log
+        # Handle API requests separately to be able to split the log
         location /api/ {
                 try_files $uri @domjudgeFrontApi;
                 error_log /var/log/nginx/domjudge-api.log;
@@ -252,22 +263,26 @@ location / {
 }
 
 # Or you can install it with a prefix
-#location /domjudge { return 301 /domjudge/; }
-#location /domjudge/ {
-#       root $domjudgeRoot;
-#       rewrite ^/domjudge/(.*)$ /$1 break;
-#       try_files $uri @domjudgeFront;
+location /domjudge { return 301 /domjudge/; }
+# Disallow opening .php files directly
+location ~ ^/domjudge/+[^/]+\.php$ { return 404; }
+location /domjudge/ {
+        root $domjudgeRoot;
+        rewrite ^/domjudge/(.*)$ /$1 break;
+        try_files $uri @domjudgeFront;
 
         # Handle API requests separately to be able to split the log
-#       location /domjudge/api/ {
-#               rewrite ^/domjudge/(.*)$ /$1 break;
-#               try_files $uri @domjudgeFrontApi;
-#       }
-#}
+        location /domjudge/api/ {
+                rewrite ^/domjudge/(.*)$ /$1 break;
+                try_files $uri @domjudgeFrontApi;
+        }
+}
 
 location @domjudgeFront {
+
         sub_filter_once off;
         sub_filter 'href="/team/scoreboard"' 'href="/team/scoreboard" target="_blank"';
+
         fastcgi_split_path_info ^(.+\.php)(/.*)$;
         fastcgi_pass domjudge;
         include fastcgi_params;
