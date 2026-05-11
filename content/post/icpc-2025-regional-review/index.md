@@ -60,6 +60,9 @@ static/
 
 #### 优化后的外榜反代
 优化了外榜缓存，使其缓存所有需要的文件类型
+
+{{% details summary="外榜反代Caddyfile配置" %}}
+
 ```Caddyfile
 {
     auto_https off
@@ -90,6 +93,8 @@ static/
     }
 }
 ```
+
+{{% /details %}}
 
 #### 打印
 
@@ -304,6 +309,8 @@ pm.status_path = /fpm_status
 
 默认的max_children是40，完全撑不起来赛场所有选手的访问，在这之后由于无法确认到底真的修复了没有，觉得起一种简单粗暴的办法，直接监控死了就重新拉，让GPT搓了一个出来
 
+{{% details summary="PHP-FPM监控重启脚本" %}}
+
 ```shell
 #!/bin/bash
 
@@ -337,6 +344,8 @@ while true; do
 done
 ```
 
+{{% /details %}}
+
 但即使这样，在正赛的最后，由于所有人全都再狂交直接把服务器CPU全部打满，到了是崩了下，但由于拉的够快选手应该几乎无感觉
 
 全程监控可见主服务器宽带基本稳定在50MB/s的状态，而外榜服务器则全程打满，下回需要给两台服务器都搞成链路聚合的，不然网络压力过大了。
@@ -349,6 +358,9 @@ done
 ### 优化PHP Session储存
 
 检查PHP FPM Slowlog，可见如下
+
+{{% details summary="PHP FPM Slowlog" %}}
+
 ```
 [19-Oct-2025 06:22:30]  [pool domjudge] pid 494122
 script_filename = /opt/domjudge/domserver/webapp/public/index.php
@@ -373,6 +385,8 @@ script_filename = /opt/domjudge/domserver/webapp/public/index.php
 [0x000075337d813480] dispatch() /opt/domjudge/domserver/lib/vendor/symfony/http-kernel/HttpKernel.php:157
 [0x000075337d8133a0] handleRaw() /opt/domjudge/domserver/lib/vendor/symfony/http-kernel/HttpKernel.php:76
 ```
+
+{{% /details %}}
 可见`PdoSessionHandler`处有大量的Slowlog，进一步分析可见PHP session全部存在了MariaDB中，导致所有登录的选手一次请求至少有两次读取数据库操作，
 进而大幅增加了数据库负载，由于Symfony可以直接换Redis作为Session Store，完全不理解为什么要拿数据库存会话，甚至拿文件存都要比数据库好得多。因此切换成Redis作为会话存储
 ```
@@ -381,6 +395,8 @@ systemctl restart php8.3-fpm
 ```
 
 然后修改`webapp/config/services.yaml`
+
+{{% details summary="services.yaml配置" %}}
 
 ```yaml
 # This file is the entry point to configure your own services.
@@ -430,7 +446,11 @@ services:
         public: true
 ```
 
+{{% /details %}}
+
 修改`webapp/config/packages/framework.yaml`
+
+{{% details summary="framework.yaml配置" %}}
 
 ```yaml
 # see https://symfony.com/doc/current/reference/configuration/framework.html
@@ -467,6 +487,8 @@ when@test:
         session:
             storage_factory_id: session.storage.factory.mock_file
 ```
+
+{{% /details %}}
 上述修改完成后不会直接生效，需要在Symfony Console中清理缓存，注意版本会影响console位置
 + 对于DomJudge 8.3.2执行`php webapp/bin/console cache:clear`
 + 对于DomJudge 9.0.0执行`php bin/dj_console cache:clear`
@@ -536,6 +558,8 @@ server {
 
 可见一个`getConfig`竟然花费了30%以上的时间，而且其中的`array_map`竟然也花费了很长时间，去看代码可见如下
 
+{{% details summary="getConfig性能问题代码" %}}
+
 ```php
     public function getConfigSpecification(): array
     {
@@ -579,11 +603,15 @@ EOF;
     }
 ```
 
+{{% /details %}}
+
 无语好吧，这每次都要重新构建一次对象，那开销能不大么。怪不得压力测试的时候如下所示
 
 ![stress_test1](stress_test/1.png)
 
 直接让其在生成缓存的时候就是对应的对象，修改如下
+
+{{% details summary="优化后的getConfigSpecification" %}}
 
 ```php
     public function getConfigSpecification(): array
@@ -632,6 +660,8 @@ EOF;
         return require $cacheFile;
     }
 ```
+
+{{% /details %}}
 
 再重新用k6进行压力测试，如下所示
 

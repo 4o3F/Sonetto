@@ -44,6 +44,9 @@ W_\\text{1星}&=7650
 $$
 
 由此可以构建一个时间复杂度为O(1)的，同时考虑了保底机制的计算函数
+
+{{% details summary="抽卡概率计算函数" %}}
+
 ```rust
 fn calc_rank(&self, since_last_3star: u32, since_last_2star: u32) -> u8 {
 
@@ -91,6 +94,8 @@ fn calc_rank(&self, since_last_3star: u32, since_last_2star: u32) -> u8 {
 }
 ```
 
+{{% /details %}}
+
 ## GRPC服务
 Rust中构建GRPC Server/Client比较常用的是Tonic，Tonic是异步的，而我们的数据库连接应当是单例，此时需要稍微处理下
 ```rust
@@ -114,6 +119,9 @@ pub struct GachaStorage {
 ```
 每次处理抽卡业务的时候先拿到外层锁，然后获取里面的`Arc<Mutex<bool>>`，之后将这个对应UID上锁，来确保在本次抽卡结果写入完成前不会再次触发下一次抽卡，
 业务处理代码如下
+
+{{% details summary="业务处理代码" %}}
+
 ```rust
 let transaction_locks = Arc::clone(&self.storage.transaction_locks);
 let request = request.into_inner();
@@ -135,7 +143,12 @@ let wait_lock: Arc<Mutex<bool>>;
 let mut wait_lock = wait_lock.lock();
 *wait_lock = true;
 ```
+
+{{% /details %}}
 这样便可以确保不会出现上次抽卡完成后，新的保底数据未能写入数据库而产生的数据冒险问题。剩余的部分便是寻常的业务逻辑处理，下面会省略一些重复度高的部分
+
+{{% details summary="完整业务逻辑" %}}
+
 ```rust
  let tx = conn
      .begin_with_config(
@@ -200,5 +213,7 @@ let mut wait_lock = wait_lock.lock();
  *wait_lock = false;
  Ok(Response::new(GachaResponse { success: true, id }))
 ```
+
+{{% /details %}}
 上述为核心的业务逻辑部分，其余的如数据库插入处理，配置文件加载解析等在此不再赘述。
 总体来说核心的轮盘保底处理方式十分巧妙，避免了高复杂度的循环判断逻辑，简洁有效。

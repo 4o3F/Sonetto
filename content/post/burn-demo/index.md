@@ -20,6 +20,9 @@ tags:
 
 ## 数据加载
 首先需要写一个struct来作为输入的原子数据(大概这个意思)，同时我们需要自定义一个反序列化函数来把字符串类型的时间变为UNIX时间戳来方便transformer理解
+
+{{% details summary="输入数据结构定义" %}}
+
 ```rust
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SatelliteStatus {
@@ -50,6 +53,8 @@ pub fn load_satellite_status(data_path: String) -> Vec<SatelliteStatus> {
 }
 ```
 
+{{% /details %}}
+
 由于任务是时间序列预测，需要输入10个时刻数据，输出下一个时刻的数据，因此搞一个type
 ```rust
 pub type SatelliteStatusTimeSeriesData = [SatelliteStatus; 11];
@@ -63,6 +68,9 @@ pub struct SatelliteStatusTimeSeriesDataset {
 ```
 在这个任务里由于数据量较少没有进行二进制数据缓存的处理，虽然加载略慢但是问题不大，如果数据量更大的话其实最好是从CSV或JSON等读取并处理完数据后再进行二进制缓存  
 然后需要实现数据集的加载函数，按照时间序列搞一个滑动窗口，每次取11个时刻的数据，前10个作为输入，最后一个作为输出
+
+{{% details summary="数据集加载函数" %}}
+
 ```rust
 impl SatelliteStatusTimeSeriesDataset {
     pub fn new() -> anyhow::Result<Self> {
@@ -94,6 +102,8 @@ impl SatelliteStatusTimeSeriesDataset {
     }
 }
 ```
+
+{{% /details %}}
 为了能够让Burn的训练器自动读取，需要实现`Dataset` trait
 ```rust
 impl Dataset<SatelliteStatusTimeSeriesData> for SatelliteStatusTimeSeriesDataset {
@@ -139,6 +149,9 @@ impl<B: Backend> Batcher<数据集, Batch<B>>
 ```
 然后在实现的`batch`函数里来处理数据，注意此时的`SatelliteStatusBatch`为后面训练用的`TrainConfig`里的`batch_size`个Batch，  
 也就是说，每一个数据的source应当是`time_length(10) * input_datas`这个二维Tensor，但是要乘一个`batch_size`因而变为了三维的Tensor
+
+{{% details summary="Tensor构建逻辑" %}}
+
 ```rust
 impl<B: Backend> Batcher<SatelliteStatusTimeSeriesData, SatelliteStatusBatch<B>>
     for SatelliteStatusBatcher<B>
@@ -189,6 +202,8 @@ impl<B: Backend> Batcher<SatelliteStatusTimeSeriesData, SatelliteStatusBatch<B>>
     }
 }
 ```
+
+{{% /details %}}
 处理的时候务必要注意数据的归一化处理，不然会导致梯度爆炸或者梯度消失，此处由于是一个Demo因而直接采用magic number了
 
 ## 模型编写
@@ -248,6 +263,9 @@ pub fn forward_training(
 }
 ```
 这之后其实训练过程就已经可以手动进行了，但是为了方便可以采用Burn提供的自动训练器，也很简单只需要实现两个trait即可
+
+{{% details summary="训练Trait实现" %}}
+
 ```rust
 impl<B: AutodiffBackend> TrainStep<SatelliteStatusBatch<B>, RegressionOutput<B>>
     for SatelliteStatusPredictor<B>
@@ -269,6 +287,8 @@ impl<B: Backend> ValidStep<SatelliteStatusBatch<B>, RegressionOutput<B>>
     }
 }
 ```
+
+{{% /details %}}
 
 ## 自动训练
 Burn很贴心的给配了个控制台UI，来实时查看训练进度，很nice  
@@ -299,6 +319,9 @@ let config = TrainConfig::new(SatelliteStatusPredictorConfig::new(), AdamConfig:
 train::<MyAutodiffBackend>(config, device);
 ```
 训练时候先要进一步将整个数据集切分成训练集和验证集两部分
+
+{{% details summary="训练集划分与训练配置" %}}
+
 ```rust
 let dataset: ShuffledDataset<SatelliteStatusTimeSeriesDataset, [data::SatelliteStatus; 11]> =
     ShuffledDataset::with_seed(
@@ -335,6 +358,8 @@ let dataloader_valid = DataLoaderBuilder::new(batcher_valid)
     .shuffle(config.seed)
     .build(dataset_val);
 ```
+
+{{% /details %}}
 完成后便可以直接扔给Burn的自动训练器来进行训练了，训练完成后保存checkpoint到指定文件即可
 ```rust
 B::seed(config.seed);

@@ -21,6 +21,9 @@ ADB基于TLS的认证和通讯协议主要是为了完善[Ascent](https://github
 首先要注意，安卓使用的是Google基于OpenSSL编写的BoringSSL，很多地方都有改动，所以尽量不要使用OpenSSL来实现安卓的一些通讯，可能会出现异常
 ### 生成证书
 首先我们需要生成一份X509格式的证书，注意**这个证书和密钥必须妥善保存**，这是后期在认证时候的唯一标识，生成证书的代码如下，这部分参考了OpenSSL的example
+
+{{% details summary="X509证书生成" %}}
+
 ```rust
 fn generate_cert() -> anyhow::Result<(boring::x509::X509, boring::pkey::PKey<boring::pkey::Private>)> {
     let rsa = boring::rsa::Rsa::generate(2048).context("failed to generate rsa keypair")?;
@@ -134,6 +137,8 @@ fn generate_cert() -> anyhow::Result<(boring::x509::X509, boring::pkey::PKey<bor
     Ok((x509, pkey))
 }
 ```
+
+{{% /details %}}
 注意下必须要是由CA签名的证书，否则的话会提示在用CA证书来进行通讯的错误
 ### 连接
 有几点要注意的
@@ -228,6 +233,9 @@ hkdf::Hkdf::<sha2::Sha256>::new(None, bob_key.as_ref()).expand("adb pairing_auth
 + `ANDROID_PUBKEY_MODULUS_SIZE: i32 = 2048 / 8`
 + `ANDROID_PUBKEY_ENCODED_SIZE: i32 = 3 * 4 + 2 * ANDROID_PUBKEY_MODULUS_SIZE`
 + `ANDROID_PUBKEY_MODULUS_SIZE_WORDS: i32 = ANDROID_PUBKEY_MODULUS_SIZE / 4`
+
+{{% details summary="Android公钥解析" %}}
+
 ```rust
 pub fn encode_rsa_publickey(public_key: boring::rsa::Rsa<boring::pkey::Public>) -> Result<Vec<u8>, anyhow::Error> {
     let mut r32: boring::bn::BigNum;
@@ -294,6 +302,8 @@ fn encode_rsa_publickey_with_name(public_key: boring::rsa::Rsa<boring::pkey::Pub
     Ok(bos.into_vec())
 }
 ```
+
+{{% /details %}}
 ### PeerInfo生成阶段
 首先准备AES 128 GCM加密所使用的Crypter，照例直接使用BoringSSL的
 ```rust
@@ -363,6 +373,9 @@ stream.flush().await?;
 ![](adb_tls_connect.png)
 ### 数据包格式
 所有数据包的定义如下
+
+{{% details summary="数据包定义" %}}
+
 ```rust
 struct Message {
     command: u32,
@@ -386,6 +399,8 @@ impl Message {
     }
 }
 ```
+
+{{% /details %}}
 数据包的data_check部分需要对数据生成checksum以防止传输出错，checksum生成方法如下
 ```rust
 fn get_payload_checksum(data: Vec<u8>, offset: i32, length: i32) -> i32 {
@@ -397,6 +412,9 @@ fn get_payload_checksum(data: Vec<u8>, offset: i32, length: i32) -> i32 {
 }
 ```
 完整的数据包生成过程如下
+
+{{% details summary="数据包生成过程" %}}
+
 ```rust
 fn generate_message(command: i32, arg0: i32, arg1: i32, data: Vec<u8>) -> bytebuffer::ByteBuffer {
     let mut message = bytebuffer::ByteBuffer::new();
@@ -419,6 +437,8 @@ fn generate_message(command: i32, arg0: i32, arg1: i32, data: Vec<u8>) -> bytebu
     message
 }
 ```
+
+{{% /details %}}
 下面是所有需要的数据包command部分以及额外的固定值
 ```rust
 const A_CNXN: i32 = 0x4e584e43;
@@ -472,6 +492,9 @@ stream.write_all(stls_message.as_bytes()).await.unwrap();
 ### TLS握手阶段
 此处注意，如果你的设备Root了，ADBD可能会自动关闭证书验证并允许任何证书连接，这时候需要使用Magisk覆盖`ro.boot.verifiedbootstate`为`green`而后重启ADBD才能正常进行验证  
 L13到L23进行的设置使得其与官方ADB Client发送的数据包一致，注意L23的关闭SNI至关重要，L19到L21的部分会导出这次TLS加密连接的密钥，可以用于在Wireshark中Debug使用
+
+{{% details summary="TLS连接配置" %}}
+
 ```rust
 let cert_file = std::fs::File::open(cert_path).unwrap();
 let pkey_file = std::fs::File::open(pkey_path).unwrap();
@@ -498,6 +521,8 @@ let mut config = connector.build().configure().unwrap();
 config.set_use_server_name_indication(false);
 let mut stream = tokio_boring::connect(config, host, stream).await.unwrap();
 ```
+
+{{% /details %}}
 ### 接收CNXN消息
 成功建立安全TLS连接后，ADBD会发送自己的信息
 ```rust

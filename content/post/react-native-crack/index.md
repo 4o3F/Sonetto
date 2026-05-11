@@ -45,6 +45,9 @@ __d(function(s, n, o, p, a, t, e) {
 ```
 
 然后接下来顺着`pool`来寻找，发现一段可疑代码
+
+{{% details summary="pool相关代码" %}}
+
 ```javascript
     function c() {
         return (c = (0,
@@ -71,11 +74,16 @@ __d(function(s, n, o, p, a, t, e) {
         })).apply(this, arguments)
     }
 ```
+
+{{% /details %}}
 首先看里面有多个点
 + `d[6]`代表的应该就是模块459
 + `u.default.aesDecrypt`看名字是AES解密，需要进一步看是否在算法里做了动作
 
 接下来查找`aesDecrypt`，发现下面的部分
+
+{{% details summary="aesDecrypt实现" %}}
+
 ```javascript
 __d(function(g, r, i, a, m, e, d) {
     Object.defineProperty(e, "__esModule", {
@@ -130,6 +138,8 @@ __d(function(g, r, i, a, m, e, d) {
     e.default = u
 }, 660, [3, 7, 8, 661]);
 ```
+
+{{% /details %}}
 可以发现其使用的是CryptoJS，AES CBC模式加密，先捋清楚逻辑看看其有没有更改CryptoJS库  
 根据代码可以发现，传入的第一个参数是密文，第二个参数是密钥，而IV则是固定的`6301386859816930`
 
@@ -138,6 +148,9 @@ __d(function(g, r, i, a, m, e, d) {
 > 研究到三点多没搞明白，给我搞自闭了，第二天早上才反应过来这人给我发错了
 
 下面来看一下他的API请求，也蛮有意思的，为了防止被直接抓包猜出来API的用途，他把API全都搞了个MD5值来用，具体代码如下
+
+{{% details summary="API请求MD5映射" %}}
+
 ```javascript
     e.get = function(n, u) {
         var d = !(arguments.length > 2 && void 0 !== arguments[2]) || arguments[2]
@@ -160,6 +173,8 @@ __d(function(g, r, i, a, m, e, d) {
         }, d, f)
     }
 ```
+
+{{% /details %}}
 从L5可见，他把所有的API全都算了个MD5用，也是没谁了，接下来看一下他对发送数据的加密
 ```javascript
     function l(t) {
@@ -177,6 +192,9 @@ __d(function(g, r, i, a, m, e, d) {
 也是AES加密，虽然这回密钥是拼接的但是没啥用，`account`就是上面找到的`pool`旁边就有，都是写死的值  
 而后仔细看还可以发现他是从aliyun的oss里面拿了一个加密的字符串，里面包含的是所有后端服务器的域名，大同小异，密钥都是写死的，在此不过多赘述了  
 观察API可以发现这程序的真实用途
+
+{{% details summary="API接口列表" %}}
+
 ```javascript
     function p() {
         return (p = (0,
@@ -203,5 +221,7 @@ __d(function(g, r, i, a, m, e, d) {
         })).apply(this, arguments)
     }
 ```
+
+{{% /details %}}
 本质上就是盗取通讯录，短信，位置，设备信息，同时还会上传相册照片  
 算是很老的一个骗局了，这个作为皮套是色情软件，本身里面一段视频也没有，emmm我不好评价

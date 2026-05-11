@@ -40,6 +40,8 @@ max_allowed_packet = 1G
 
 Use following script to generate Docker Compose file.
 
+{{% details summary="JudgeHost Docker Compose生成脚本" %}}
+
 ```shell
 #!/usr/bin/env bash
 set -euo pipefail
@@ -94,6 +96,8 @@ networks:
     name: domjudge-judgehosts_default
 YAML
 ```
+
+{{% /details %}}
 
 **Better not modify judgehost during contest, or judge task may be lost**
 
@@ -151,6 +155,8 @@ chown -R www-data:www-data /var/cache/nginx/domjudge
 ```
 
 6. Edit `/opt/domjudge/domserver/etc/nginx-conf-inner`, it should become like the following
+
+{{% details summary="nginx-conf-inner完整配置" %}}
 
 ```
 # Generated from 'nginx-conf-inner.in' on Fri Apr  3 08:16:46 AM UTC 2026.
@@ -329,5 +335,7 @@ add_header X-XSS-Protection "1; mode=block";
 error_log /var/log/nginx/domjudge.log;
 access_log /var/log/nginx/domjudge.log;
 ```
+
+{{% /details %}}
 
 7. Tune the opcache params inside `php.ini` according to the opcache monitor

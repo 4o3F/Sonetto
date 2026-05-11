@@ -20,6 +20,8 @@ tags:
 
 修正了随机性问题，确保没有重复
 
+{{% details summary="VBA代码" %}}
+
 ```vba
 Option Explicit
 
@@ -88,9 +90,12 @@ Sub ResetPasswordGenerator()
     IsRandomized = False
     MsgBox "密码生成器已重置。", vbInformation
 End Sub
-```
+``` 
 
+{{% /details %}}
 ### 打印脚本 (DomJudge)
+
+{{% details summary="参考代码" %}}
 
 ```python
 #!/usr/bin/env python3
@@ -279,9 +284,13 @@ if __name__ == "__main__":
     main()
 ```
 
+{{% /details %}}
+
 ### 打印脚本 (Client)
 
 需要下一个`SumatraPDF.exe`放入对应的位置，这样可以避免打印机不支持直接打印raw PDF stream的时候卡死在任务队列中。
+
+{{% details summary="参考代码" %}}
 
 ```python
 import secrets
@@ -387,6 +396,8 @@ if __name__ == "__main__":
 
 ```
 
+{{% /details %}}
+
 ### 压测
 
 此次正赛前用新写的[Onyx压测工具](https://github.com/4o3F/Onyx)对全流程做了压力测试，效果不错能很显著的预先发现问题。  
@@ -430,6 +441,8 @@ sudo apt install -y \
 
 ### Step 1: 从 raw image 中提取 rootfs 并打包为 squashfs
 
+{{% details summary="提取rootfs并打包squashfs" %}}
+
 ```bash
 # 创建工作目录
 mkdir -p ~/contest-work && cd ~/contest-work
@@ -471,10 +484,14 @@ echo "squashfs 大小:"
 ls -lh filesystem.squashfs
 ```
 
+{{% /details %}}
+
 > **注意**：如果 image 中的 rootfs 不是 loop0p4，请根据 `lsblk -f /dev/loop0` 的输出调整。
 > 如果压缩速度太慢或目标机器解压慢，可以换用 `-comp lz4` 牺牲压缩率换速度。
 
 ### Step 2: 初始化 live-build 项目
+
+{{% details summary="初始化live-build项目" %}}
 
 ```bash
 mkdir -p ~/contest-live && cd ~/contest-live
@@ -499,6 +516,8 @@ lb config \
   --apt-indices false \
   --cache true
 ```
+
+{{% /details %}}
 
 ### Step 3: 添加需要的软件包
 
@@ -533,6 +552,8 @@ ln ~/contest-work/filesystem.squashfs \
 改为：**脚本放入 PATH，通过 autologin + `.bash_profile` 在登录时自动启动。**
 
 #### 5a: 安装脚本
+
+{{% details summary="contest-install安装脚本" %}}
 
 ```bash
 mkdir -p config/includes.chroot/usr/local/bin/
@@ -850,6 +871,8 @@ SCRIPTEOF
 
 ```
 
+{{% /details %}}
+
 ```bash
 chmod +x config/includes.chroot/usr/local/bin/contest-install
 ```
@@ -991,6 +1014,8 @@ Can be run manually after deployment, or baked into the image before Step 1 (mks
 
 Create the script:
 
+{{% details summary="JudgeHost配置脚本" %}}
+
 ```bash
 cat > setup-judgehost.sh <<'JUDGEEOF'
 #!/bin/bash
@@ -1108,6 +1133,8 @@ JUDGEEOF
 
 chmod +x setup-judgehost.sh
 ```
+
+{{% /details %}}
 
 Usage:
 

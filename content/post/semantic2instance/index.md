@@ -49,6 +49,9 @@ let img: image::ImageBuffer<Rgb<u8>, Vec<u8>> = image::open(entry.path()).unwrap
 for (color, class_id) in color_class_map.clone().iter() {}
 ```
 之后就要进入到OpenCV的处理部分了，首先新建一个矩阵来保存灰度图数据，之后遍历所有像素，将目标颜色的图片转为灰度图数据
+
+{{% details summary="灰度图转换" %}}
+
 ```rust
 let mut mat = opencv::core::Mat::new_rows_cols_with_default(
     768,
@@ -70,6 +73,8 @@ for (x, y, pixel) in img.enumerate_pixels() {
     }
 }
 ```
+
+{{% /details %}}
 之后就是调用find_contours函数来获取所有的多边形，注意此时拿到的hierarchy很重要，是后续处理内含洞时候的关键
 ```rust
 let mut contours =
@@ -91,6 +96,9 @@ imgproc::find_contours_with_hierarchy_def(
 ```
 在之后就是最关键的处理有洞多边形的部分，核心原理是先找到洞边框与外边框最近的点，这两个点之后会用一条线连接起来，让外边框的线从这个链接点进入内部洞的边框，旋转一圈后再链接回外边框，
 由于边框的点是有序的，在处理过程中需要将内边框点的顺序翻转，这样才能和外边框连在一起；此外还要注意边框点的数量，少于3个的话无法形成个真正的多边形，因而需要舍弃掉
+
+{{% details summary="边框处理与多边形生成" %}}
+
 ```rust
 let mut combined_contours: Vec<Vec<(i32, i32)>> = Vec::new();
 
@@ -160,6 +168,8 @@ while current_index != -1 && !contours.is_empty() {
     current_index = *current_hierarchy.first().unwrap();
 }
 ```
+
+{{% /details %}}
 再之后就是处理数据，加入最前方的class标志
 ```rust
 for contour in combined_contours.iter() {
@@ -206,6 +216,9 @@ while threads.join_next().await.is_some() {}
 ## 额外备注
 在此之外，需要注意的是YOLO本身的数据加载与处理部分写的巨烂无比，充斥着各种magic number和bug，在此说一个和上文相关的就是在其加载polygon数据的时候会通过线性插值将其强制扩充到1000个点，
 但是由于物体可能靠着边缘，所以可能会出现直角边缘被线性插值变为斜角的情况，因而可以把resample_segments改为下面的
+
+{{% details summary="改进的resample_segments" %}}
+
 ```python
 def resample_segment(s, n):
     # s is a segment with shape (m, 2), where m is the number of points in the segment
@@ -236,6 +249,8 @@ def resample_segment(s, n):
 def resample_segments(segments, n):
     return [resample_segment(s, n) for s in segments]
 ```
+
+{{% /details %}}
 这可以解决上述的问题
 
 > 碎碎念一点.....好希望我自己会画画，这样就能给自己画自设了....头像换来换去还是觉得不老满意的，烦

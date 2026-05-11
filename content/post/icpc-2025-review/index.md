@@ -45,6 +45,8 @@ Visitors中间变少的时候是热身赛和正式赛之间的开幕式，然而
 
 压测脚本如下
 
+{{% details summary="k6压测脚本" %}}
+
 ```js
 import http from 'k6/http';
 import {sleep, check} from 'k6';
@@ -87,6 +89,8 @@ export default function () {
 }
 ```
 
+{{% /details %}}
+
 由此可确定问题所在，无论是出于什么原因，有大量的请求涌入外榜服务器，由于没能逐级缓存并降低流量，导致PHP服务被直接拖垮。
 
 ## 赛前准备备忘
@@ -121,6 +125,8 @@ export default function () {
 
 注意所有的静态文件均是长时缓存，而榜单则设置3s的缓存时间，同时为了方式缓存击穿设置5s的stale时间。
 
+{{% details summary="外榜缓存Caddyfile" %}}
+
 ```Caddyfile
 {
     auto_https off
@@ -151,6 +157,8 @@ export default function () {
     }
 }
 ```
+
+{{% /details %}}
 
 这样设置后可以在反代服务器上缓存数据，尤其是带Team Affiliation的话如果完全展示一次请求会产生大约100MB的请求数据，服务器宽带直接爆炸。
 
@@ -187,6 +195,8 @@ server {
 ```
 
 再之后更改内层location配置，对所有PHP相关的请求进行限流，修改nginx-conf-inner，修改后的如下所示
+
+{{% details summary="Nginx请求过滤配置" %}}
 
 ```text
 server_name _default_;
@@ -255,6 +265,8 @@ error_log /var/log/nginx/domjudge.log;
 access_log /var/log/nginx/domjudge.log;
 ```
 
+{{% /details %}}
+
 ### Parallel-SSH命令
 
 SSH会进行public key fingerprint验证，所以需要额外添加参数。IP列表可以从Natsume中下载。
@@ -266,6 +278,8 @@ parallel-ssh -t 6000 -p 1000 -h ips_all.txt -l "root" -x "-i ./privatekey -o 'St
 ### 打印代码备份
 
 之后改得话应该得把enscript换掉，换一个直接一步出PDF的
+
+{{% details summary="打印代码备份脚本" %}}
 
 ```python
 import sys
@@ -442,6 +456,8 @@ def main():
 if __name__ == "__main__":
     main()
 ```
+
+{{% /details %}}
 
 paps安装
 

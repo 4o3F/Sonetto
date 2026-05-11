@@ -22,6 +22,9 @@ tags:
 
 ## APK提取
 使用apktool提取后可见`assets`目录结构如下
+
+{{% details summary="assets目录结构" %}}
+
 ```
 .
 ├── Android
@@ -50,6 +53,8 @@ tags:
 │       └── Resources
 └── sdkfile
 ```
+
+{{% /details %}}
 明显可见`audio`目录，进去看一下，发现全都是`.wem`和`.bnk`格式的文件，
 这是Wwiss引擎出来的音乐，直接上[foobar2000](https://www.foobar2000.org/)，然后加载[vgmstream encoder](https://www.foobar2000.org/components/view/foo_input_vgmstream)，
 之后可以将文件拖拽进来聆听，如果想导出成其他格式的话，需要给foobar2000配编码器，在[foobar网站上有提供免费编码器的合集](https://www.foobar2000.org/getfile/Free_Encoder_Pack-2023-04-30.exe)
