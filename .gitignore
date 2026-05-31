@@ -2,3 +2,5 @@ public
 resources
 .idea
 .hugo_build.lock
+.ccg
+.claude
