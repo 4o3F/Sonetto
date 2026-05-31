@@ -1,0 +1,23 @@
+[zh]
+label = "简体中文"
+locale = "zh-CN"
+title = "403F's Cafe"
+weight = 1
+
+[zh.params.sidebar]
+subtitle = "May we sail the stars and go far beyond."
+
+[zh.params.comments.giscus]
+lang = "zh-CN"
+
+[en]
+label = "English"
+locale = "en-US"
+title = "403F's Cafe"
+weight = 2
+
+[en.params.sidebar]
+subtitle = "May we sail the stars and go far beyond."
+
+[en.params.comments.giscus]
+lang = "en"
