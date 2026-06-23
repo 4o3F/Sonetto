@@ -22,6 +22,7 @@ const posts = await getCollection("posts");
 const sortedPosts = getSortedPosts(posts);
 const featuredPosts = sortedPosts.filter(({ data }) => data.featured);
 const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
+const hasFeaturedPosts = featuredPosts.length > 0;
 const homePath = getRelativeLocaleUrl(locale, "");
 ---
 
@@ -70,8 +71,13 @@ const homePath = getRelativeLocaleUrl(locale, "");
             {t.home.featured}
           </h2>
           <ul>
-            {featuredPosts.map(data => (
-              <Card variant="h3" cover="card" {...data} />
+            {featuredPosts.map((data, index) => (
+              <Card
+                variant="h3"
+                cover="card"
+                priority={index === 0}
+                {...data}
+              />
             ))}
           </ul>
         </section>
@@ -85,8 +91,13 @@ const homePath = getRelativeLocaleUrl(locale, "");
             {t.home.recentPosts}
           </h2>
           <ul>
-            {recentPosts.slice(0, postsConfig.perIndex).map(data => (
-              <Card variant="h3" cover="card" {...data} />
+            {recentPosts.slice(0, postsConfig.perIndex).map((data, index) => (
+              <Card
+                variant="h3"
+                cover="card"
+                priority={!hasFeaturedPosts && index === 0}
+                {...data}
+              />
             ))}
           </ul>
         </section>

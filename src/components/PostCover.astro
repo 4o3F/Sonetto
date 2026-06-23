@@ -25,7 +25,12 @@ const {
 
 const widthsByVariant: Record<CoverVariant, number[]> = {
   hero: [640, 960, 1280, 1600],
-  card: [480, 640, 768, 960],
+  card: [320, 480, 640, 768, 960],
+};
+
+const qualityByVariant: Record<CoverVariant, number> = {
+  hero: 82,
+  card: 68,
 };
 
 const sizesByVariant: Record<CoverVariant, string> = {
@@ -52,6 +57,7 @@ const imageClass = [classesByVariant[variant], className]
   alt={imageAlt}
   widths={widthsByVariant[variant]}
   sizes={sizesByVariant[variant]}
+  quality={qualityByVariant[variant]}
   loading={loading}
   decoding={loading === "eager" ? "sync" : "async"}
   fetchpriority={loading === "eager" ? "high" : "auto"}

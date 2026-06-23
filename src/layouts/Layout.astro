@@ -1,5 +1,4 @@
 ---
-import { ClientRouter } from "astro:transitions";
 import { resolveDefaultOgImagePath } from "@/utils/resolveDefaultOgImagePath";
 import { getAssetPath } from "@/utils/withBase";
 import GoogleAnalytics from "@/components/GoogleAnalytics.astro";
@@ -104,8 +103,6 @@ const rssHref = getAssetPath("rss.xml");
         window.__theme = { value: theme };
       })();
     </script>
-
-    <ClientRouter />
   </head>
   <body
     class="bg-background font-app text-foreground selection:bg-accent/75 selection:text-accent-foreground flex min-h-svh flex-col"

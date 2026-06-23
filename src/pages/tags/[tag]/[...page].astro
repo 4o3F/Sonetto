@@ -47,7 +47,11 @@ const t = useTranslations(locale);
     pageDesc={`${t.pages.tagDesc} "${tagName}".`}
   >
     <ul>
-      {page.data.map(data => <Card cover="card" {...data} />)}
+      {
+        page.data.map((data, index) => (
+          <Card cover="card" priority={index === 0} {...data} />
+        ))
+      }
     </ul>
   </Main>
 

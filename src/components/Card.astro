@@ -10,11 +10,13 @@ type CoverMode = "none" | "card";
 type Props = {
   variant?: "h2" | "h3";
   cover?: CoverMode;
+  priority?: boolean;
 } & CollectionEntry<"posts">;
 
 const {
   variant: Heading = "h2",
   cover: coverMode = "none",
+  priority = false,
   id,
   data,
   filePath,
@@ -35,7 +37,13 @@ const coverSrc = coverMode === "card" ? cover : undefined;
           "hover:border-accent/60 transition-colors duration-200 focus-visible:no-underline",
         ]}
       >
-        <PostCover src={coverSrc} alt="" title={title} variant="card" />
+        <PostCover
+          src={coverSrc}
+          alt=""
+          title={title}
+          variant="card"
+          loading={priority ? "eager" : "lazy"}
+        />
         <div class="p-4 sm:p-5">
           <Heading
             transition:name={toTransitionName(title)}

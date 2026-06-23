@@ -6,22 +6,40 @@ const disabled =
   import.meta.env.PUBLIC_GA_DISABLED === "true";
 const enabled = import.meta.env.PROD && !disabled && measurementId;
 const initScript = `
-window.dataLayer = window.dataLayer || [];
-function gtag(){dataLayer.push(arguments);}
-gtag("js", new Date());
-gtag("config", "${measurementId}", { anonymize_ip: true });
+(function () {
+  const measurementId = "${measurementId}";
+
+  function loadAnalytics() {
+    if (document.querySelector('script[src*="googletagmanager.com/gtag/js"]')) return;
+
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = window.gtag || function () { window.dataLayer.push(arguments); };
+
+    const script = document.createElement("script");
+    script.async = true;
+    script.src = "https://www.googletagmanager.com/gtag/js?id=" + encodeURIComponent(measurementId);
+    document.head.appendChild(script);
+
+    window.gtag("js", new Date());
+    window.gtag("config", measurementId, { anonymize_ip: true });
+  }
+
+  function scheduleAnalytics() {
+    if ("requestIdleCallback" in window) {
+      window.requestIdleCallback(loadAnalytics, { timeout: 3000 });
+      return;
+    }
+
+    setTimeout(loadAnalytics, 1500);
+  }
+
+  if (document.readyState === "complete") {
+    scheduleAnalytics();
+  } else {
+    window.addEventListener("load", scheduleAnalytics, { once: true });
+  }
+})();
 `;
 ---
 
-{
-  enabled && (
-    <>
-      <script
-        is:inline
-        async
-        src={`https://www.googletagmanager.com/gtag/js?id=${measurementId}`}
-      />
-      <script is:inline set:html={initScript} />
-    </>
-  )
-}
+{enabled && <script is:inline set:html={initScript} />}
