@@ -2,7 +2,12 @@
 import config from "@/config";
 import LinkButton from "./LinkButton.astro";
 
+type Props = {
+  class?: string;
+};
+
 const { site, socials } = config;
+const { class: className } = Astro.props;
 
 const icons = import.meta.glob<{
   default: (_props: Record<string, unknown>) => unknown;
@@ -22,7 +27,7 @@ const items = await Promise.all(
 );
 ---
 
-<div class="flex flex-wrap items-center gap-1">
+<div class:list={["flex flex-wrap items-center gap-1", className]}>
   {
     items.map(({ url, title, Icon }) =>
       Icon ? (

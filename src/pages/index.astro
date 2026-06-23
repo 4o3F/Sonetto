@@ -53,25 +53,8 @@ const homePath = getRelativeLocaleUrl(locale, "");
       </a>
 
       <p>{config.site.description}</p>
-      <p class="mt-2">
-        这里记录开发、科研、竞赛运维和日常折腾。
-        <LinkButton
-          class="hover:text-accent underline decoration-dashed underline-offset-4"
-          href={getRelativeLocaleUrl(locale, "about")}
-        >
-          关于本站
-        </LinkButton>
-      </p>
-      {
-        socials.length > 0 && (
-          <div class="mt-4 flex max-sm:flex-col sm:items-center">
-            <div class="me-2 mb-1 whitespace-nowrap sm:mb-0">
-              {t.home.socialLinks}:
-            </div>
-            <Socials />
-          </div>
-        )
-      }
+      <p class="mt-2">这里记录开发、科研、竞赛运维和日常折腾。</p>
+      {socials.length > 0 && <Socials class="mt-4" />}
     </section>
 
     {

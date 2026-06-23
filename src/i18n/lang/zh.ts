@@ -5,6 +5,7 @@ export default {
     home: "首页",
     posts: "文章",
     tags: "标签",
+    links: "朋友们",
     about: "关于",
     archives: "归档",
     search: "搜索",
@@ -28,7 +29,6 @@ export default {
     page: "第",
   },
   home: {
-    socialLinks: "社交链接",
     featured: "精选文章",
     recentPosts: "最近文章",
     allPosts: "全部文章",
@@ -43,6 +43,9 @@ export default {
 
     tagsTitle: "标签",
     tagsDesc: "文章使用的所有标签。",
+
+    linksTitle: "朋友们",
+    linksDesc: "朋友们的网站。",
 
     postsTitle: "文章",
     postsDesc: "全部文章。",

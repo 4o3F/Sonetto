@@ -5,6 +5,7 @@ export default {
     home: "Home",
     posts: "Posts",
     tags: "Tags",
+    links: "Friends",
     about: "About",
     archives: "Archives",
     search: "Search",
@@ -28,7 +29,6 @@ export default {
     page: "Page",
   },
   home: {
-    socialLinks: "Social Links",
     featured: "Featured",
     recentPosts: "Recent Posts",
     allPosts: "All Posts",
@@ -43,6 +43,9 @@ export default {
 
     tagsTitle: "Tags",
     tagsDesc: "All the tags used in posts.",
+
+    linksTitle: "Friends",
+    linksDesc: "Friends' sites.",
 
     postsTitle: "Posts",
     postsDesc: "All the articles I've posted.",

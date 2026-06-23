@@ -1,0 +1,66 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import Header from "@/components/Header.astro";
+import Breadcrumb from "@/components/Breadcrumb.astro";
+import Main from "@/components/Main.astro";
+import Footer from "@/components/Footer.astro";
+import { useTranslations } from "@/i18n";
+import config from "@/config";
+
+const locale = Astro.currentLocale ?? config.site.lang;
+const t = useTranslations(locale);
+
+const friendLinks = [
+  {
+    nickname: "a632079",
+    url: "https://i.a632079.me",
+    avatar:
+      "https://1.gravatar.com/avatar/4fb74b87cca5557f11d1137a7bb69e709439b7c599bcb3a145125ff9d0cc8485?size=1024",
+  },
+];
+---
+
+<Layout
+  title={`${t.pages.linksTitle} | ${config.site.title}`}
+  description={t.pages.linksDesc}
+>
+  <Header />
+
+  <Breadcrumb />
+
+  <Main pageTitle={t.pages.linksTitle} pageDesc={t.pages.linksDesc}>
+    <ul class="grid gap-4 sm:grid-cols-2">
+      {
+        friendLinks.map(({ nickname, url, avatar }) => (
+          <li>
+            <a
+              href={url}
+              target="_blank"
+              rel="noopener noreferrer"
+              class:list={[
+                "group border-border bg-background flex items-center gap-4 rounded border p-4 no-underline",
+                "hover:border-accent/60 transition-colors duration-200 focus-visible:no-underline",
+              ]}
+            >
+              <img
+                src={avatar}
+                alt=""
+                loading="lazy"
+                decoding="async"
+                class="size-10 shrink-0 rounded-full"
+              />
+              <div class="min-w-0">
+                <h2 class="text-accent text-lg font-medium decoration-dashed underline-offset-4 group-hover:underline group-focus-visible:underline">
+                  {nickname}
+                </h2>
+                <p class="mt-1 text-sm break-all opacity-80">{url}</p>
+              </div>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </Main>
+
+  <Footer />
+</Layout>
