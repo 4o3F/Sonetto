@@ -1,0 +1,59 @@
+---
+import { Image } from "astro:assets";
+import type { ImageMetadata } from "astro";
+
+type CoverVariant = "hero" | "card";
+type LoadingMode = "eager" | "lazy";
+
+type Props = {
+  src: ImageMetadata;
+  alt?: string;
+  title?: string;
+  variant?: CoverVariant;
+  loading?: LoadingMode;
+  class?: string;
+};
+
+const {
+  src,
+  alt,
+  title,
+  variant = "card",
+  loading = "lazy",
+  class: className,
+} = Astro.props;
+
+const widthsByVariant: Record<CoverVariant, number[]> = {
+  hero: [640, 960, 1280, 1600],
+  card: [480, 640, 768, 960],
+};
+
+const sizesByVariant: Record<CoverVariant, string> = {
+  hero: "(min-width: 768px) 768px, calc(100vw - 2rem)",
+  card: "(min-width: 768px) 768px, calc(100vw - 2rem)",
+};
+
+const classesByVariant: Record<CoverVariant, string> = {
+  hero: ["mt-6 h-[min(70vh,34rem)] w-full", "rounded object-contain"].join(" "),
+  card: [
+    "h-44 w-full bg-muted object-cover sm:h-52 md:h-60",
+    "transition-transform duration-200 group-hover:scale-[1.01] motion-reduce:transition-none",
+  ].join(" "),
+};
+
+const imageAlt = alt ?? title ?? "";
+const imageClass = [classesByVariant[variant], className]
+  .filter(Boolean)
+  .join(" ");
+---
+
+<Image
+  {src}
+  alt={imageAlt}
+  widths={widthsByVariant[variant]}
+  sizes={sizesByVariant[variant]}
+  loading={loading}
+  decoding={loading === "eager" ? "sync" : "async"}
+  fetchpriority={loading === "eager" ? "high" : "auto"}
+  class={imageClass}
+/>

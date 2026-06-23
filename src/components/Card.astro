@@ -1,0 +1,73 @@
+---
+import type { CollectionEntry } from "astro:content";
+import { getPostUrl } from "@/utils/getPostPaths";
+import { toTransitionName } from "@/utils/toTransitionName";
+import Datetime from "./Datetime.astro";
+import PostCover from "./PostCover.astro";
+
+type CoverMode = "none" | "card";
+
+type Props = {
+  variant?: "h2" | "h3";
+  cover?: CoverMode;
+} & CollectionEntry<"posts">;
+
+const {
+  variant: Heading = "h2",
+  cover: coverMode = "none",
+  id,
+  data,
+  filePath,
+} = Astro.props;
+
+const { title, description, cover, ...props } = data;
+const postUrl = getPostUrl(id, filePath, Astro.currentLocale);
+const coverSrc = coverMode === "card" ? cover : undefined;
+---
+
+<li class={coverSrc ? "my-8" : "my-6"}>
+  {
+    coverSrc ? (
+      <a
+        href={postUrl}
+        class:list={[
+          "group text-foreground border-border bg-background block overflow-hidden rounded border no-underline",
+          "hover:border-accent/60 transition-colors duration-200 focus-visible:no-underline",
+        ]}
+      >
+        <PostCover src={coverSrc} alt="" title={title} variant="card" />
+        <div class="p-4 sm:p-5">
+          <Heading
+            transition:name={toTransitionName(title)}
+            class:list={[
+              "text-accent inline-block text-lg font-medium",
+              "decoration-dashed underline-offset-4",
+              "group-hover:underline group-focus-visible:underline",
+            ]}
+          >
+            {title}
+          </Heading>
+          <div class="mt-1">
+            <Datetime {...props} />
+          </div>
+          <p class="mt-2">{description}</p>
+        </div>
+      </a>
+    ) : (
+      <>
+        <a
+          href={postUrl}
+          class:list={[
+            "text-accent inline-block text-lg font-medium",
+            "decoration-dashed underline-offset-4 hover:underline",
+            "focus-visible:no-underline focus-visible:underline-offset-0",
+          ]}
+        >
+          <Heading transition:name={toTransitionName(title)}>{title}</Heading>
+        </a>
+        <Datetime {...props} />
+        <p>{description}</p>
+      </>
+    )
+  }
+</li>

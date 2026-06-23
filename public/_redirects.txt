@@ -1,0 +1,75 @@
+# Cloudflare Pages redirects for Hugo -> Astro URL migration
+# Keep these long-term so Google and external links can transfer signals.
+
+/p/jenkins-pipeline /posts/jenkins-pipeline-deploy/ 301
+/p/jenkins-pipeline/ /posts/jenkins-pipeline-deploy/ 301
+/p/adb-tls-protocol /posts/adb-tls-protocol/ 301
+/p/adb-tls-protocol/ /posts/adb-tls-protocol/ 301
+/p/appreciate-works /posts/appreciate-works/ 301
+/p/appreciate-works/ /posts/appreciate-works/ 301
+/p/ascent-devlog /posts/ascent-devlog/ 301
+/p/ascent-devlog/ /posts/ascent-devlog/ 301
+/p/burn-demo /posts/burn-demo/ 301
+/p/burn-demo/ /posts/burn-demo/ 301
+/p/docker-network-isolation /posts/docker-network-isolation/ 301
+/p/docker-network-isolation/ /posts/docker-network-isolation/ 301
+/p/domjudge-checklist /posts/domjudge-checklist/ 301
+/p/domjudge-checklist/ /posts/domjudge-checklist/ 301
+/p/domjudge-opentelemetry /posts/domjudge-opentelemetry/ 301
+/p/domjudge-opentelemetry/ /posts/domjudge-opentelemetry/ 301
+/p/future-goals /posts/future-goals/ 301
+/p/future-goals/ /posts/future-goals/ 301
+/p/gacha-design /posts/gacha-design/ 301
+/p/gacha-design/ /posts/gacha-design/ 301
+/p/hi /posts/hi/ 301
+/p/hi/ /posts/hi/ 301
+/p/icpc-2024-review /posts/icpc-2024-review/ 301
+/p/icpc-2024-review/ /posts/icpc-2024-review/ 301
+/p/icpc-2025-regional-review /posts/icpc-2025-regional-review/ 301
+/p/icpc-2025-regional-review/ /posts/icpc-2025-regional-review/ 301
+/p/icpc-2025-review /posts/icpc-2025-review/ 301
+/p/icpc-2025-review/ /posts/icpc-2025-review/ 301
+/p/icpc-2026-review /posts/icpc-2026-review/ 301
+/p/icpc-2026-review/ /posts/icpc-2026-review/ 301
+/p/jenkins-docker /posts/jenkins-docker/ 301
+/p/jenkins-docker/ /posts/jenkins-docker/ 301
+/p/jmeter-stress-test /posts/jmeter-stress-test/ 301
+/p/jmeter-stress-test/ /posts/jmeter-stress-test/ 301
+/p/jprofiler-investigate /posts/jprofiler-investigate/ 301
+/p/jprofiler-investigate/ /posts/jprofiler-investigate/ 301
+/p/ml-issues /posts/ml-issues/ 301
+/p/ml-issues/ /posts/ml-issues/ 301
+/p/mongodb-upgrade /posts/mongodb-upgrade/ 301
+/p/mongodb-upgrade/ /posts/mongodb-upgrade/ 301
+/p/msvc-llvm /posts/msvc-llvm/ 301
+/p/msvc-llvm/ /posts/msvc-llvm/ 301
+/p/react-native-crack /posts/react-native-crack/ 301
+/p/react-native-crack/ /posts/react-native-crack/ 301
+/p/reverse-1999-unpack /posts/reverse-1999-unpack/ 301
+/p/reverse-1999-unpack/ /posts/reverse-1999-unpack/ 301
+/p/seckill-payment /posts/seckill-payment/ 301
+/p/seckill-payment/ /posts/seckill-payment/ 301
+/p/selfhost-nat-rdp /posts/selfhost-nat-rdp/ 301
+/p/selfhost-nat-rdp/ /posts/selfhost-nat-rdp/ 301
+/p/semantic2instance /posts/semantic2instance/ 301
+/p/semantic2instance/ /posts/semantic2instance/ 301
+/p/spectralgpt-rethink /posts/spectralgpt-rethink/ 301
+/p/spectralgpt-rethink/ /posts/spectralgpt-rethink/ 301
+/p/steam-subscription-migration /posts/steam-subscription-migration/ 301
+/p/steam-subscription-migration/ /posts/steam-subscription-migration/ 301
+/p/superpixel-algorithm-compare /posts/superpixel-algorithm-compare/ 301
+/p/superpixel-algorithm-compare/ /posts/superpixel-algorithm-compare/ 301
+/p/uptrace-integrate /posts/uptrace-integrate/ 301
+/p/uptrace-integrate/ /posts/uptrace-integrate/ 301
+
+# Legacy Hugo taxonomy paths
+/categories/:tag /tags/:tag/ 301
+/categories/:tag/ /tags/:tag/ 301
+
+# Legacy Hugo standalone pages, kept explicit to avoid accidental rewrites
+/page/about /about/ 301
+/page/about/ /about/ 301
+/page/archives /archives/ 301
+/page/archives/ /archives/ 301
+/page/search /search/ 301
+/page/search/ /search/ 301

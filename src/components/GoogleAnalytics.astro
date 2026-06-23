@@ -1,0 +1,27 @@
+---
+const measurementId =
+  import.meta.env.PUBLIC_GA_MEASUREMENT_ID ?? "G-3PB5N8JWJS";
+const disabled =
+  import.meta.env.PUBLIC_GA_DISABLED === true ||
+  import.meta.env.PUBLIC_GA_DISABLED === "true";
+const enabled = import.meta.env.PROD && !disabled && measurementId;
+const initScript = `
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag("js", new Date());
+gtag("config", "${measurementId}", { anonymize_ip: true });
+`;
+---
+
+{
+  enabled && (
+    <>
+      <script
+        is:inline
+        async
+        src={`https://www.googletagmanager.com/gtag/js?id=${measurementId}`}
+      />
+      <script is:inline set:html={initScript} />
+    </>
+  )
+}

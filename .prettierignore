@@ -1,0 +1,11 @@
+dist/
+.astro/
+node_modules/
+public/
+.ccg/
+.claude/
+migration-manifest.json
+pnpm-lock.yaml
+src/content/posts/**
+src/content/pages/about.md
+*.mdx
