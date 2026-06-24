@@ -34,7 +34,7 @@ const friendLinks = [
   <Breadcrumb />
 
   <Main pageTitle={t.pages.linksTitle} pageDesc={t.pages.linksDesc}>
-    <ul class="grid gap-4 sm:grid-cols-2">
+    <ul data-friend-links class="grid gap-4 sm:grid-cols-2">
       {
         friendLinks.map(({ nickname, url, avatar }) => (
           <li>
@@ -65,4 +65,27 @@ const friendLinks = [
   </Main>
 
   <Footer />
+
+  <script>
+    function shuffleFriendLinks() {
+      const list = document.querySelector("[data-friend-links]");
+      if (!list) return;
+
+      const items = Array.from(list.children);
+      for (let index = items.length - 1; index > 0; index -= 1) {
+        const swapIndex = Math.floor(Math.random() * (index + 1));
+        [items[index], items[swapIndex]] = [items[swapIndex], items[index]];
+      }
+
+      list.append(...items);
+    }
+
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", shuffleFriendLinks, {
+        once: true,
+      });
+    } else {
+      shuffleFriendLinks();
+    }
+  </script>
 </Layout>
