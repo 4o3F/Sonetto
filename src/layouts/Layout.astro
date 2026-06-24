@@ -1,7 +1,7 @@
 ---
 import { resolveDefaultOgImagePath } from "@/utils/resolveDefaultOgImagePath";
 import { getAssetPath } from "@/utils/withBase";
-import GoogleAnalytics from "@/components/GoogleAnalytics.astro";
+import UmamiAnalytics from "@/components/UmamiAnalytics.astro";
 import config from "@/config";
 import "@/styles/global.css";
 
@@ -83,7 +83,7 @@ const rssHref = getAssetPath("rss.xml");
       )
     }
 
-    <GoogleAnalytics />
+    <UmamiAnalytics />
 
     <!--
       Inline FOUC-prevention script: sets data-theme on <html> before

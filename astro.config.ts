@@ -67,12 +67,17 @@ export default defineConfig({
         context: "client",
         optional: true,
       }),
-      PUBLIC_GA_MEASUREMENT_ID: envField.string({
+      PUBLIC_UMAMI_SCRIPT_URL: envField.string({
         access: "public",
         context: "client",
         optional: true,
       }),
-      PUBLIC_GA_DISABLED: envField.boolean({
+      PUBLIC_UMAMI_WEBSITE_ID: envField.string({
+        access: "public",
+        context: "client",
+        optional: true,
+      }),
+      PUBLIC_UMAMI_DISABLED: envField.boolean({
         access: "public",
         context: "client",
         optional: true,

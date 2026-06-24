@@ -1,0 +1,17 @@
+---
+const scriptUrl =
+  import.meta.env.PUBLIC_UMAMI_SCRIPT_URL ?? "https://cloud.umami.is/script.js";
+const websiteId =
+  import.meta.env.PUBLIC_UMAMI_WEBSITE_ID ??
+  "0f77abd7-c7ea-4754-90fd-c8e24a66d0c3";
+const disabled =
+  import.meta.env.PUBLIC_UMAMI_DISABLED === true ||
+  import.meta.env.PUBLIC_UMAMI_DISABLED === "true";
+const enabled = import.meta.env.PROD && !disabled && websiteId;
+---
+
+{
+  enabled && (
+    <script is:inline defer src={scriptUrl} data-website-id={websiteId} />
+  )
+}
