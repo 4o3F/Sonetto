@@ -7,7 +7,7 @@ import IconSearch from "@/assets/icons/IconSearch.svg";
 import IconMoon from "@/assets/icons/IconMoon.svg";
 import IconX from "@/assets/icons/IconX.svg";
 import LinkButton from "./LinkButton.astro";
-import { stripBase, stripLocale } from "@/utils/withBase";
+import { getAssetPath, stripBase, stripLocale } from "@/utils/withBase";
 import { useTranslations } from "@/i18n";
 import config from "@/config";
 
@@ -49,8 +49,15 @@ const isActive = (path: string) => {
   >
     <a
       href={getRelativeLocaleUrl(locale, "")}
-      class="absolute py-1 text-xl leading-8 font-semibold whitespace-nowrap sm:static sm:my-auto sm:text-2xl sm:leading-none"
+      class="absolute flex items-center gap-2 py-1 text-xl leading-8 font-semibold whitespace-nowrap sm:static sm:my-auto sm:text-2xl sm:leading-none"
     >
+      <img
+        src={getAssetPath("avatar.jpg")}
+        alt=""
+        width="32"
+        height="32"
+        class="size-8 shrink-0 rounded-full object-cover"
+      />
       {site.title}
     </a>
     <nav
