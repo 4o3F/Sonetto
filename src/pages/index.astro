@@ -10,6 +10,7 @@ import Socials from "@/components/Socials.astro";
 import Card from "@/components/Card.astro";
 import LinkButton from "@/components/LinkButton.astro";
 import { getSortedPosts } from "@/utils/getSortedPosts";
+import { getAssetPath } from "@/utils/withBase";
 import { useTranslations } from "@/i18n";
 import config from "@/config";
 
@@ -35,27 +36,40 @@ const homePath = getRelativeLocaleUrl(locale, "");
     class="app-layout"
   >
     <section id="hero" class="border-border border-b pt-8 pb-6">
-      <h1 class="my-4 inline-block text-4xl font-bold sm:my-8 sm:text-5xl">
-        {config.site.title}
-      </h1>
-      <a
-        target="_blank"
-        href={`${import.meta.env.BASE_URL.replace(/\/?$/, "/")}rss.xml`}
-        class="inline-block"
-        aria-label="RSS 订阅"
-        title="RSS 订阅"
-      >
-        <IconRss
-          width={20}
-          height={20}
-          class="stroke-accent scale-125 stroke-3 rtl:-rotate-90"
+      <div class="my-4 flex items-start gap-4 sm:my-8 sm:items-center sm:gap-6">
+        <img
+          src={getAssetPath("avatar.jpg")}
+          alt=""
+          width="144"
+          height="144"
+          class="size-20 shrink-0 rounded-full object-cover sm:size-36"
         />
-        <span class="sr-only">RSS 订阅</span>
-      </a>
+        <div class="min-w-0 flex-1">
+          <div class="mb-4 flex flex-wrap items-center gap-3">
+            <h1 class="text-2xl font-bold sm:text-5xl">
+              {config.site.title}
+            </h1>
+            <a
+              target="_blank"
+              href={getAssetPath("rss.xml")}
+              class="inline-block shrink-0"
+              aria-label="RSS 订阅"
+              title="RSS 订阅"
+            >
+              <IconRss
+                width={20}
+                height={20}
+                class="stroke-accent scale-125 stroke-3 rtl:-rotate-90"
+              />
+              <span class="sr-only">RSS 订阅</span>
+            </a>
+          </div>
 
-      <p>{config.site.description}</p>
-      <p class="mt-2">这里记录开发、科研、竞赛运维和日常折腾。</p>
-      {socials.length > 0 && <Socials class="mt-4" />}
+          <p>{config.site.description}</p>
+          <p class="mt-2">这里记录开发、科研、竞赛运维和日常折腾。</p>
+          {socials.length > 0 && <Socials class="mt-4" />}
+        </div>
+      </div>
     </section>
 
     {

@@ -25,6 +25,7 @@ const pathWithoutTrailingSlash =
     : relativePath;
 
 const currentPath = stripLocale(pathWithoutTrailingSlash, locale);
+const isHome = currentPath === "/";
 
 const isActive = (path: string) => {
   const currentPathArray = currentPath.split("/").filter(p => p.trim());
@@ -47,19 +48,23 @@ const isActive = (path: string) => {
   <div
     class="border-border bg-background relative flex w-full items-baseline justify-between border-b py-4 sm:items-center sm:py-6"
   >
-    <a
-      href={getRelativeLocaleUrl(locale, "")}
-      class="absolute flex items-center gap-2 py-1 text-xl leading-8 font-semibold whitespace-nowrap sm:static sm:my-auto sm:text-2xl sm:leading-none"
-    >
-      <img
-        src={getAssetPath("avatar.jpg")}
-        alt=""
-        width="32"
-        height="32"
-        class="size-8 shrink-0 rounded-full object-cover"
-      />
-      {site.title}
-    </a>
+    {
+      !isHome && (
+        <a
+          href={getRelativeLocaleUrl(locale, "")}
+          class="absolute flex items-center gap-2 py-1 text-xl leading-8 font-semibold whitespace-nowrap sm:static sm:my-auto sm:text-2xl sm:leading-none"
+        >
+          <img
+            src={getAssetPath("avatar.jpg")}
+            alt=""
+            width="32"
+            height="32"
+            class="size-8 shrink-0 rounded-full object-cover"
+          />
+          {site.title}
+        </a>
+      )
+    }
     <nav
       id="nav-menu"
       class="flex w-full flex-col items-center sm:ms-2 sm:flex-row sm:justify-end sm:space-x-4 sm:py-0"
