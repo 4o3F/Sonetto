@@ -78,6 +78,7 @@ __d(function(s, n, o, p, a, t, e) {
 
 
 </details>
+
 首先看里面有多个点
 + `d[6]`代表的应该就是模块459
 + `u.default.aesDecrypt`看名字是AES解密，需要进一步看是否在算法里做了动作
@@ -145,6 +146,7 @@ __d(function(g, r, i, a, m, e, d) {
 
 
 </details>
+
 可以发现其使用的是CryptoJS，AES CBC模式加密，先捋清楚逻辑看看其有没有更改CryptoJS库  
 根据代码可以发现，传入的第一个参数是密文，第二个参数是密钥，而IV则是固定的`6301386859816930`
 
@@ -183,6 +185,7 @@ __d(function(g, r, i, a, m, e, d) {
 
 
 </details>
+
 从L5可见，他把所有的API全都算了个MD5用，也是没谁了，接下来看一下他对发送数据的加密
 ```javascript
     function l(t) {
@@ -234,5 +237,6 @@ __d(function(g, r, i, a, m, e, d) {
 
 
 </details>
+
 本质上就是盗取通讯录，短信，位置，设备信息，同时还会上传相册照片  
 算是很老的一个骗局了，这个作为皮套是色情软件，本身里面一段视频也没有，emmm我不好评价

@@ -119,6 +119,7 @@ ADB无线调试必须要先进行配对后才能进行连接，配对的时候�
 
 
 </details>
+
 主要的更改就是通过更改命令传入参数，将ADB所需要保存的文件等路径全都改为APP可以读写的数据文件夹，避免出错
 
 ## Flutter Isolated与Background Service
@@ -200,6 +201,7 @@ pub fn get_listener_count() -> i32 {
 
 
 </details>
+
 其实一看就会发现我根本没有写`listener`的`unregister`，所以其实只要注册的次数够多是可以崩掉APP的，也算是一个值得优化的点
 
 > 更新完毕，需要进一步解释的部分请留言  

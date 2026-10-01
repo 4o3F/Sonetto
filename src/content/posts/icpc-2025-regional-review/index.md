@@ -396,6 +396,7 @@ script_filename = /opt/domjudge/domserver/webapp/public/index.php
 
 
 </details>
+
 可见`PdoSessionHandler`处有大量的Slowlog，进一步分析可见PHP session全部存在了MariaDB中，导致所有登录的选手一次请求至少有两次读取数据库操作，
 进而大幅增加了数据库负载，由于Symfony可以直接换Redis作为Session Store，完全不理解为什么要拿数据库存会话，甚至拿文件存都要比数据库好得多。因此切换成Redis作为会话存储
 ```
@@ -504,6 +505,7 @@ when@test:
 
 
 </details>
+
 上述修改完成后不会直接生效，需要在Symfony Console中清理缓存，注意版本会影响console位置
 + 对于DomJudge 8.3.2执行`php webapp/bin/console cache:clear`
 + 对于DomJudge 9.0.0执行`php bin/dj_console cache:clear`

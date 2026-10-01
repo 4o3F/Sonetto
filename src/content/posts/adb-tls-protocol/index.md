@@ -143,6 +143,7 @@ fn generate_cert() -> anyhow::Result<(boring::x509::X509, boring::pkey::PKey<bor
 
 
 </details>
+
 注意下必须要是由CA签名的证书，否则的话会提示在用CA证书来进行通讯的错误
 ### 连接
 有几点要注意的
@@ -311,6 +312,7 @@ fn encode_rsa_publickey_with_name(public_key: boring::rsa::Rsa<boring::pkey::Pub
 
 
 </details>
+
 ### PeerInfo生成阶段
 首先准备AES 128 GCM加密所使用的Crypter，照例直接使用BoringSSL的
 ```rust
@@ -411,6 +413,7 @@ impl Message {
 
 
 </details>
+
 数据包的data_check部分需要对数据生成checksum以防止传输出错，checksum生成方法如下
 ```rust
 fn get_payload_checksum(data: Vec<u8>, offset: i32, length: i32) -> i32 {
@@ -452,6 +455,7 @@ fn generate_message(command: i32, arg0: i32, arg1: i32, data: Vec<u8>) -> bytebu
 
 
 </details>
+
 下面是所有需要的数据包command部分以及额外的固定值
 ```rust
 const A_CNXN: i32 = 0x4e584e43;
@@ -539,6 +543,7 @@ let mut stream = tokio_boring::connect(config, host, stream).await.unwrap();
 
 
 </details>
+
 ### 接收CNXN消息
 成功建立安全TLS连接后，ADBD会发送自己的信息
 ```rust

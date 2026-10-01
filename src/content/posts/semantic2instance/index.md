@@ -76,6 +76,7 @@ for (x, y, pixel) in img.enumerate_pixels() {
 
 
 </details>
+
 之后就是调用find_contours函数来获取所有的多边形，注意此时拿到的hierarchy很重要，是后续处理内含洞时候的关键
 ```rust
 let mut contours =
@@ -174,6 +175,7 @@ while current_index != -1 && !contours.is_empty() {
 
 
 </details>
+
 再之后就是处理数据，加入最前方的class标志
 ```rust
 for contour in combined_contours.iter() {
@@ -258,6 +260,7 @@ def resample_segments(segments, n):
 
 
 </details>
+
 这可以解决上述的问题
 
 > 碎碎念一点.....好希望我自己会画画，这样就能给自己画自设了....头像换来换去还是觉得不老满意的，烦

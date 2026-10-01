@@ -108,6 +108,7 @@ impl SatelliteStatusTimeSeriesDataset {
 
 
 </details>
+
 为了能够让Burn的训练器自动读取，需要实现`Dataset` trait
 ```rust
 impl Dataset<SatelliteStatusTimeSeriesData> for SatelliteStatusTimeSeriesDataset {
@@ -211,6 +212,7 @@ impl<B: Backend> Batcher<SatelliteStatusTimeSeriesData, SatelliteStatusBatch<B>>
 
 
 </details>
+
 处理的时候务必要注意数据的归一化处理，不然会导致梯度爆炸或者梯度消失，此处由于是一个Demo因而直接采用magic number了
 
 ## 模型编写
@@ -373,6 +375,7 @@ let dataloader_valid = DataLoaderBuilder::new(batcher_valid)
 
 
 </details>
+
 完成后便可以直接扔给Burn的自动训练器来进行训练了，训练完成后保存checkpoint到指定文件即可
 ```rust
 B::seed(config.seed);

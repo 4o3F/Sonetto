@@ -169,6 +169,7 @@ KeyError: (b'II', 1, (1,), 1, (16, 16, 16, 16), (0, 0, 0))
 
 
 </details>
+
 可以发现对应不上，所以需要手动设置，查看第二列对应的数据应该为`Photometric Interpretation`，用`tiffinfo`查看
 
 <details>
@@ -200,6 +201,7 @@ TIFF Directory at offset 0x10 (16)
 
 
 </details>
+
 接着手动设置对应的Tag，`Photometric Interpretation`对应的为262
 ```shell
 tiffset -d $page-number -s 262 2 input.tif
