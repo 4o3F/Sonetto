@@ -36,15 +36,17 @@ const homePath = getRelativeLocaleUrl(locale, "");
     class="app-layout"
   >
     <section id="hero" class="border-border border-b pt-8 pb-6">
-      <div class="my-4 flex items-start gap-4 sm:my-8 sm:items-center sm:gap-6">
+      <div
+        class="my-4 flex items-start gap-4 sm:my-8 sm:items-stretch sm:gap-6"
+      >
         <img
           src={getAssetPath("avatar.jpg")}
           alt=""
-          width="144"
-          height="144"
-          class="size-20 shrink-0 rounded-full object-cover sm:size-36"
+          width="176"
+          height="176"
+          class="size-20 shrink-0 rounded-full object-cover sm:size-44"
         />
-        <div class="min-w-0 flex-1">
+        <div class="min-w-0 flex-1 sm:flex sm:flex-col sm:justify-between">
           <div class="mb-4 flex flex-wrap items-center gap-3">
             <h1 class="text-2xl font-bold sm:text-5xl">
               {config.site.title}
