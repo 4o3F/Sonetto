@@ -235,7 +235,9 @@ const ogImage = ogImageUrl
 
   function attachCopyButtons() {
     const copyButtonLabel = "复制";
-    const codeBlocks = Array.from(document.querySelectorAll("pre"));
+    const codeBlocks = Array.from(
+      document.querySelectorAll("pre:not(.mermaid-source)")
+    );
 
     for (const codeBlock of codeBlocks) {
       const wrapper = document.createElement("div");

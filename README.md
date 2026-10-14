@@ -25,6 +25,26 @@ pnpm validate:migration
 - Hugo `details` shortcode 会转换为标准 HTML `<details>`。
 - post bundle 资源会复制到 `public/posts/<slug>/`。
 
+## Mermaid图表
+
+Markdown和MDX文章都可以直接使用`mermaid`代码块：
+
+````markdown
+```mermaid
+flowchart LR
+    input[输入图像] --> model[模型推理]
+    model --> output[分割结果]
+```
+````
+
+图表在浏览器中渲染，随站点明暗主题切换；只有包含图表的页面才加载Mermaid。禁用JavaScript、加载失败或图表语法有误时保留可读源码，不影响正文。使用严格安全模式，不支持图表中的JavaScript点击回调。
+
+修改渲染逻辑后可运行针对性的Markdown转换测试：
+
+```bash
+node --test tests/mermaid-markdown.test.mjs
+```
+
 ## 构建验证
 
 ```bash

@@ -136,6 +136,23 @@
     }
   }
 
+  /* Mermaid diagrams opt out of prose styles so SVG labels keep their layout. */
+  .mermaid-diagram {
+    @apply border-border my-6 overflow-x-auto rounded-md border p-4;
+  }
+
+  .mermaid-source {
+    @apply m-0 font-mono text-sm whitespace-pre;
+  }
+
+  .mermaid-output svg {
+    @apply mx-auto block h-auto;
+  }
+
+  .mermaid-error {
+    @apply text-muted-foreground mb-3 text-sm;
+  }
+
   /* ===== Code Blocks & Syntax Highlighting ===== */
   .astro-code {
     @apply outline-border flex border bg-(--shiki-light-bg) text-(--shiki-light) [&_span]:text-(--shiki-light);

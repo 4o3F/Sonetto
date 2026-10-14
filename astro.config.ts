@@ -6,6 +6,7 @@ import { unified } from "@astrojs/markdown-remark";
 import remarkToc from "remark-toc";
 import remarkCollapse from "remark-collapse";
 import remarkMath from "remark-math";
+import remarkMermaid from "./src/utils/remarkMermaid";
 import rehypeKatex from "rehype-katex";
 import rehypeCallouts from "rehype-callouts";
 import {
@@ -40,6 +41,7 @@ export default defineConfig({
     processor: unified({
       remarkPlugins: [
         remarkMath,
+        remarkMermaid,
         [remarkToc, { heading: "目录", tight: true }],
         [remarkCollapse, { test: "目录", summary: "目录" }],
       ],
