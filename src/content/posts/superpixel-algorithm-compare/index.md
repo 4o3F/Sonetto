@@ -7,6 +7,12 @@ tags:
   - "dev"
   - "research"
 cover: "./cover.jpg"
+coverSource:
+  status: identified
+  title: "辉夜大小姐想要成为摄影师"
+  artist: "Cupoi/吃咖喱的poi"
+  url: "https://www.pixiv.net/artworks/144367676"
+  artistUrl: "https://www.pixiv.net/users/12890391"
 coverAlt: "超像素算法比较 封面图"
 ---
 

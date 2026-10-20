@@ -7,6 +7,12 @@ tags:
   - "dev"
   - "intern"
 cover: "./cover.jpg"
+coverSource:
+  status: identified
+  title: "A Philosophical Wanderer"
+  artist: "和菓子"
+  url: "https://www.pixiv.net/artworks/94601278"
+  artistUrl: "https://www.pixiv.net/users/13748172"
 coverAlt: "用Jenkins Pipeline实现服务器集群部署 封面图"
 ---
 

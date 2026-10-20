@@ -6,6 +6,12 @@ draft: false
 tags:
   - "dev"
 cover: "./cover.jpg"
+coverSource:
+  status: identified
+  title: "さよならの朝に約束の花をかざろう"
+  artist: "necömi"
+  url: "https://www.pixiv.net/artworks/67450790"
+  artistUrl: "https://www.pixiv.net/users/420509"
 coverAlt: "Steam订阅迁移 封面图"
 ---
 

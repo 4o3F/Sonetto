@@ -7,6 +7,12 @@ tags:
   - "daily"
   - "dev"
 cover: "./cover.jpg"
+coverSource:
+  status: identified
+  title: "17th"
+  artist: "kieed"
+  url: "https://www.pixiv.net/artworks/122018859"
+  artistUrl: "https://www.pixiv.net/users/11525066"
 coverAlt: "ICPC 西安邀请赛 2025 办赛总结&备忘录 封面图"
 ---
 

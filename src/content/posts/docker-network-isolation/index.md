@@ -7,6 +7,12 @@ tags:
   - "dev"
   - "docker"
 cover: "./cover.jpg"
+coverSource:
+  status: identified
+  title: "ナタ装備"
+  artist: "室埴 ポコ"
+  url: "https://www.pixiv.net/artworks/103979119"
+  artistUrl: "https://www.pixiv.net/users/76266"
 coverAlt: "Docker网络隔离 封面图"
 ---
 

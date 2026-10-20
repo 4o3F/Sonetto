@@ -7,6 +7,12 @@ tags:
   - "ai"
   - "essay"
 cover: "./cover.jpg"
+coverSource:
+  status: identified
+  title: "Sedulous"
+  artist: "落詩"
+  url: "https://www.pixiv.net/artworks/116742888"
+  artistUrl: "https://www.pixiv.net/users/18089465"
 coverAlt: "SpectralGPT论文实验与相关思考 封面图"
 ---
 

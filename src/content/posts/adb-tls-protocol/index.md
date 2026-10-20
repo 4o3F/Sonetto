@@ -8,6 +8,12 @@ tags:
   - "dev"
   - "network"
 cover: "./cover.jpg"
+coverSource:
+  status: identified
+  title: "不想上班鸭"
+  artist: "小木蹬子"
+  url: "https://www.pixiv.net/artworks/96139474"
+  artistUrl: "https://www.pixiv.net/users/59046424"
 coverAlt: "ADB TLS相关协议 封面图"
 ---
 

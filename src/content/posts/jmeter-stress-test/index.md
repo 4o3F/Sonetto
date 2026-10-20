@@ -7,6 +7,12 @@ tags:
   - "dev"
   - "intern"
 cover: "./cover.jpg"
+coverSource:
+  status: identified
+  title: "浮かんだメロディを忘れてしまう前に"
+  artist: "HOJI"
+  url: "https://www.pixiv.net/artworks/108893744"
+  artistUrl: "https://www.pixiv.net/users/19133926"
 coverAlt: "用JMeter实现压力测试 封面图"
 ---
 

@@ -4,6 +4,7 @@ import { getPostUrl } from "@/utils/getPostPaths";
 import { toTransitionName } from "@/utils/toTransitionName";
 import Datetime from "./Datetime.astro";
 import PostCover from "./PostCover.astro";
+import CoverCredit from "./CoverCredit.astro";
 
 type CoverMode = "none" | "card";
 
@@ -22,7 +23,7 @@ const {
   filePath,
 } = Astro.props;
 
-const { title, description, cover, ...props } = data;
+const { title, description, cover, coverSource, ...props } = data;
 const postUrl = getPostUrl(id, filePath, Astro.currentLocale);
 const coverSrc = coverMode === "card" ? cover : undefined;
 ---
@@ -30,37 +31,45 @@ const coverSrc = coverMode === "card" ? cover : undefined;
 <li class={coverSrc ? "my-8" : "my-6"}>
   {
     coverSrc ? (
-      <a
-        href={postUrl}
+      <div
         class:list={[
-          "group text-foreground border-border bg-background block overflow-hidden rounded border no-underline",
-          "hover:border-accent/60 transition-colors duration-200 focus-visible:no-underline",
+          "text-foreground border-border bg-background overflow-hidden rounded border",
+          "hover:border-accent/60 focus-within:border-accent/60 transition-colors duration-200",
         ]}
       >
-        <PostCover
-          src={coverSrc}
-          alt=""
-          title={title}
-          variant="card"
-          loading={priority ? "eager" : "lazy"}
-        />
-        <div class="p-4 sm:p-5">
-          <Heading
-            transition:name={toTransitionName(title)}
-            class:list={[
-              "text-accent inline-block text-lg font-medium",
-              "decoration-dashed underline-offset-4",
-              "group-hover:underline group-focus-visible:underline",
-            ]}
-          >
-            {title}
-          </Heading>
-          <div class="mt-1">
-            <Datetime {...props} />
+        <a
+          href={postUrl}
+          class="group block no-underline focus-visible:no-underline"
+        >
+          <PostCover
+            src={coverSrc}
+            alt=""
+            title={title}
+            variant="card"
+            loading={priority ? "eager" : "lazy"}
+          />
+          <div class="p-4 sm:p-5">
+            <Heading
+              transition:name={toTransitionName(title)}
+              class:list={[
+                "text-accent inline-block text-lg font-medium",
+                "decoration-dashed underline-offset-4",
+                "group-hover:underline group-focus-visible:underline",
+              ]}
+            >
+              {title}
+            </Heading>
+            <div class="mt-1">
+              <Datetime {...props} />
+            </div>
+            <p class="mt-2">{description}</p>
           </div>
-          <p class="mt-2">{description}</p>
-        </div>
-      </a>
+        </a>
+        <CoverCredit
+          source={coverSource}
+          class="border-border border-t px-4 py-3 sm:px-5"
+        />
+      </div>
     ) : (
       <>
         <a

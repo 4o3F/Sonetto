@@ -3,6 +3,12 @@ title: "把IceFormer跑到华为昇腾上"
 description: "记录把原来在NVIDIA上训练的IceFormer适配到昇腾的过程，从环境配置、ATC转OM一路折腾到ONNX Runtime纯NPU推理。"
 pubDatetime: 2026-10-14T00:00:00.000Z
 cover: "./cover.jpg"
+coverSource:
+  status: identified
+  title: "2026国庆"
+  artist: "Xenomorph"
+  url: "https://www.pixiv.net/artworks/150324106"
+  artistUrl: "https://www.pixiv.net/users/33950104"
 coverAlt: "封面图"
 tags:
   - "ai"

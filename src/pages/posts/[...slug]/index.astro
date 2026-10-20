@@ -7,6 +7,7 @@ import Footer from "@/components/Footer.astro";
 import Datetime from "@/components/Datetime.astro";
 import Tag from "@/components/Tag.astro";
 import PostCover from "@/components/PostCover.astro";
+import CoverCredit from "@/components/CoverCredit.astro";
 import { getPostSlug, getPostUrl } from "@/utils/getPostPaths";
 import { getSortedPosts } from "@/utils/getSortedPosts";
 import { slugifyStr } from "@/utils/slugify";
@@ -66,6 +67,7 @@ const {
   description,
   cover,
   coverAlt,
+  coverSource,
   canonicalURL,
   pubDatetime,
   modDatetime,
@@ -140,13 +142,18 @@ const ogImage = ogImageUrl
 
     {
       cover && (
-        <PostCover
-          src={cover}
-          alt={coverAlt}
-          title={title}
-          variant="hero"
-          loading="eager"
-        />
+        <figure class="mt-6">
+          <PostCover
+            src={cover}
+            alt={coverAlt}
+            title={title}
+            variant="hero"
+            loading="eager"
+          />
+          <figcaption class="mt-2">
+            <CoverCredit source={coverSource} showRightsNote />
+          </figcaption>
+        </figure>
       )
     }
 

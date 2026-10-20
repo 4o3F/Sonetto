@@ -2,6 +2,7 @@ import { defineCollection } from "astro:content";
 import { z } from "astro/zod";
 import { glob } from "astro/loaders";
 import config from "@/config";
+import { coverSourceSchema } from "@/schemas/coverSource";
 
 export const BLOG_PATH = "src/content/posts";
 
@@ -19,19 +20,30 @@ const posts = defineCollection({
         tags: z.array(z.string().min(1)).default(["others"]),
         cover: image().optional(),
         coverAlt: z.string().trim().min(1).optional(),
+        coverSource: coverSourceSchema.optional(),
         description: z.string().min(1),
         canonicalURL: z.string().optional(),
         hideEditPost: z.boolean().optional(),
         timezone: z.string().default(config.site.timezone),
       })
       .superRefine((data, ctx) => {
-        if (!data.cover || data.coverAlt) return;
+        if (!data.cover) return;
 
-        ctx.addIssue({
-          code: "custom",
-          path: ["coverAlt"],
-          message: "coverAlt is required when cover is set",
-        });
+        if (!data.coverAlt) {
+          ctx.addIssue({
+            code: "custom",
+            path: ["coverAlt"],
+            message: "coverAlt is required when cover is set",
+          });
+        }
+
+        if (!data.coverSource) {
+          ctx.addIssue({
+            code: "custom",
+            path: ["coverSource"],
+            message: "coverSource is required when cover is set",
+          });
+        }
       }),
 });
 

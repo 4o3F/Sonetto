@@ -6,6 +6,12 @@ draft: false
 tags:
   - "dev"
 cover: "./cover.jpg"
+coverSource:
+  status: identified
+  title: "-"
+  artist: "ttosom"
+  url: "https://www.pixiv.net/artworks/87327580"
+  artistUrl: "https://www.pixiv.net/users/6203904"
 coverAlt: "利用RatHole和WinSW自建无感知远程桌面 封面图"
 ---
 

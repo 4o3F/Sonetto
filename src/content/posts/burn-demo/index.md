@@ -7,6 +7,11 @@ tags:
   - "ai"
   - "dev"
 cover: "./cover.jpg"
+coverSource:
+  status: identified
+  title: "《Unnamed Memory》第 4 集「形に息を吹きこむ」截图"
+  artist: "©2022 古宮九時/KADOKAWA/Project Unnamed Memory"
+  url: "https://unnamedmemory.com/story-s1.html"
 coverAlt: "初试Rust Burn训练模型 封面图"
 ---
 

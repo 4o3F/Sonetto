@@ -6,6 +6,12 @@ draft: false
 tags:
   - "dev"
 cover: "./cover.jpg"
+coverSource:
+  status: identified
+  title: "冬駅"
+  artist: "DangMyo"
+  url: "https://www.pixiv.net/artworks/79731173"
+  artistUrl: "https://www.pixiv.net/users/33718285"
 coverAlt: "Ascent开发记录 封面图"
 ---
 

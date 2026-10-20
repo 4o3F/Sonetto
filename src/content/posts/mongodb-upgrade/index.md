@@ -7,6 +7,12 @@ tags:
   - "dev"
   - "intern"
 cover: "./cover.jpg"
+coverSource:
+  status: identified
+  title: "Maid Nijika"
+  artist: "JLT4n"
+  url: "https://www.pixiv.net/artworks/119409112"
+  artistUrl: "https://www.pixiv.net/users/54883714"
 coverAlt: "MongoDB从4.0升级到7.0 (未完成) 封面图"
 ---
 

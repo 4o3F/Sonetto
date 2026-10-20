@@ -7,6 +7,12 @@ tags:
   - "daily"
   - "dev"
 cover: "./cover.jpg"
+coverSource:
+  status: identified
+  title: "propofol's anesthesia"
+  artist: "匣子"
+  url: "https://www.pixiv.net/artworks/129398906"
+  artistUrl: "https://www.pixiv.net/users/64408268"
 coverAlt: "为DomJudge添加OpenTelemetry监控 封面图"
 ---
 

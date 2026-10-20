@@ -6,6 +6,12 @@ draft: false
 tags:
   - "daily"
 cover: "./cover.jpg"
+coverSource:
+  status: identified
+  title: "falling"
+  artist: "唐揚げ"
+  url: "https://www.pixiv.net/artworks/93495842"
+  artistUrl: "https://www.pixiv.net/users/8236670"
 coverAlt: "一些值得一看的作品 封面图"
 ---
 

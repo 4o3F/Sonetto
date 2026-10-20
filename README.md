@@ -25,6 +25,12 @@ pnpm validate:migration
 - Hugo `details` shortcode 会转换为标准 HTML `<details>`。
 - post bundle 资源会复制到 `public/posts/<slug>/`。
 
+## 文章头图来源
+
+文章设置 `cover` 时，必须同时提供 `coverAlt` 和 `coverSource`。首页、文章列表、标签页及文章详情页都会显示头图来源；尚未核实的图片明确标记为待核实，不填写猜测的作者或链接。
+
+字段示例、核实流程和待处理图片见[头图来源维护说明](docs/cover-sources.md)。来源标注不等于获得使用授权，发布前仍需确认作者许可或适用的使用条款。
+
 ## Mermaid图表
 
 Markdown和MDX文章都可以直接使用`mermaid`代码块：

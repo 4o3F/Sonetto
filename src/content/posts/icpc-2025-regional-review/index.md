@@ -7,6 +7,12 @@ tags:
   - "daily"
   - "dev"
 cover: "./cover.jpg"
+coverSource:
+  status: identified
+  title: "おやつの時間"
+  artist: "SWAV"
+  url: "https://www.pixiv.net/artworks/90671173"
+  artistUrl: "https://www.pixiv.net/users/5130774"
 coverAlt: "ICPC 西安区域赛 2025 办赛总结&备忘录 封面图"
 ---
 

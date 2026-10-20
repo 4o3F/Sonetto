@@ -8,6 +8,12 @@ tags:
   - "dev"
   - "intern"
 cover: "./cover.jpg"
+coverSource:
+  status: identified
+  title: "昼下がりのドリップコーヒー"
+  artist: "HOJI"
+  url: "https://www.pixiv.net/artworks/118456151"
+  artistUrl: "https://www.pixiv.net/users/19133926"
 coverAlt: "将UpTrace整合进现有遗留业务系统 封面图"
 ---
 

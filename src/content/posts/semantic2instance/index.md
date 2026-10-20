@@ -7,6 +7,12 @@ tags:
   - "ai"
   - "dev"
 cover: "./cover.jpg"
+coverSource:
+  status: identified
+  title: "波奇酱Bocchi"
+  artist: "摘星star⭐"
+  url: "https://www.pixiv.net/artworks/117782788"
+  artistUrl: "https://www.pixiv.net/users/72573683"
 coverAlt: "语义分割数据集转为目标分割 封面图"
 ---
 

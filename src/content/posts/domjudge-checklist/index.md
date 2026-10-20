@@ -7,6 +7,12 @@ tags:
   - "daily"
   - "dev"
 cover: "./cover.jpg"
+coverSource:
+  status: identified
+  title: "おえかき【XPPen】"
+  artist: "ぴろ瀬"
+  url: "https://www.pixiv.net/artworks/124691157"
+  artistUrl: "https://www.pixiv.net/users/19731971"
 coverAlt: "ICPC 比赛赛前部署与性能优化检查清单 封面图"
 ---
 

@@ -10,6 +10,12 @@ tags:
   - "grpc"
   - "rust"
 cover: "./cover.jpg"
+coverSource:
+  status: identified
+  title: "こいしちゃん"
+  artist: "ke-ta"
+  url: "https://www.pixiv.net/artworks/94993093"
+  artistUrl: "https://www.pixiv.net/users/3104565"
 coverAlt: "KDays小游戏抽卡系统设计 封面图"
 ---
 

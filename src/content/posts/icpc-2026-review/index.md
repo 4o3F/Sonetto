@@ -7,6 +7,12 @@ tags:
   - "daily"
   - "dev"
 cover: "./cover.jpg"
+coverSource:
+  status: identified
+  title: "招かれざる弈者"
+  artist: "Xenomorph"
+  url: "https://www.pixiv.net/artworks/143973103"
+  artistUrl: "https://www.pixiv.net/users/33950104"
 coverAlt: "ICPC 西安邀请赛 2026 总结 封面图"
 ---
 

@@ -1,0 +1,57 @@
+---
+import type { CoverSource } from "@/schemas/coverSource";
+
+type Props = {
+  source?: CoverSource;
+  showRightsNote?: boolean;
+  class?: string;
+};
+
+const { source, showRightsNote = false, class: className } = Astro.props;
+const linkClass =
+  "decoration-dashed underline underline-offset-4 hover:text-accent focus-visible:text-accent";
+---
+
+<div
+  class:list={["text-muted-foreground text-sm leading-relaxed", className]}
+  data-cover-credit
+  data-pagefind-ignore
+>
+  <p>
+    {
+      source?.status === "identified" ? (
+        <>
+          头图：
+          {source.artistUrl ? (
+            <a
+              href={source.artistUrl}
+              target="_blank"
+              rel="noopener noreferrer external"
+              class={linkClass}
+            >
+              {source.artist}
+            </a>
+          ) : (
+            <span>{source.artist}</span>
+          )}
+          <span aria-hidden="true"> / </span>
+          <a
+            href={source.url}
+            target="_blank"
+            rel="noopener noreferrer external"
+            class={linkClass}
+          >
+            {source.title}
+          </a>
+        </>
+      ) : (
+        "头图来源待核实"
+      )
+    }
+  </p>
+  {
+    showRightsNote && (
+      <p class="mt-1">来源标注不代表获得使用授权，图片权利归原权利人所有。</p>
+    )
+  }
+</div>

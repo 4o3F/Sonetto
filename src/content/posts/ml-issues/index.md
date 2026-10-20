@@ -7,6 +7,12 @@ tags:
   - "ai"
   - "dev"
 cover: "./cover.jpg"
+coverSource:
+  status: identified
+  title: "縫罅"
+  artist: "壱珂"
+  url: "https://www.pixiv.net/artworks/118236692"
+  artistUrl: "https://www.pixiv.net/users/40462352"
 coverAlt: "机器学习踩过的坑 封面图"
 ---
 

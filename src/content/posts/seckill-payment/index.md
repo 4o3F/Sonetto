@@ -7,6 +7,12 @@ tags:
   - "dev"
   - "intern"
 cover: "./cover.jpg"
+coverSource:
+  status: identified
+  title: "♦"
+  artist: "ぴろ瀬"
+  url: "https://www.pixiv.net/artworks/90077053"
+  artistUrl: "https://www.pixiv.net/users/19731971"
 coverAlt: "实习公司秒杀系统与支付链路总结 封面图"
 ---
 

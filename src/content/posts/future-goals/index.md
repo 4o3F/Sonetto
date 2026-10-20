@@ -7,6 +7,12 @@ tags:
   - "daily"
   - "dev"
 cover: "./cover.jpg"
+coverSource:
+  status: identified
+  title: "館と少女の物語"
+  artist: "宮瀬まひろ"
+  url: "https://www.pixiv.net/artworks/85552528"
+  artistUrl: "https://www.pixiv.net/users/544479"
 coverAlt: "一些未来要做的事 封面图"
 ---
 

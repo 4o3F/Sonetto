@@ -6,6 +6,12 @@ draft: false
 tags:
   - "dev"
 cover: "./cover.jpg"
+coverSource:
+  status: identified
+  title: "重返未来1999工作图"
+  artist: "特葱油 猫饼"
+  url: "https://www.artstation.com/artwork/14NB38"
+  artistUrl: "https://www.artstation.com/tecong"
 coverAlt: "重返未来: 1999音乐提取 封面图"
 ---
 

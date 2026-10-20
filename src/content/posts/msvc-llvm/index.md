@@ -9,6 +9,11 @@ tags:
   - "llvm"
   - "msvc"
 cover: "./cover.jpg"
+coverSource:
+  status: identified
+  title: "《Stellaris（群星）》游戏图片"
+  artist: "Paradox Interactive"
+  url: "https://www.paradoxinteractive.com/games/stellaris/about"
 coverAlt: "MSVC Clang与LLVM联合配置 封面图"
 ---
 

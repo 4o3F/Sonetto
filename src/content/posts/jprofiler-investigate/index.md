@@ -8,6 +8,12 @@ tags:
   - "dev"
   - "intern"
 cover: "./cover.jpg"
+coverSource:
+  status: identified
+  title: "部屋を片付けるのが苦手"
+  artist: "HOJI"
+  url: "https://www.pixiv.net/artworks/80913701"
+  artistUrl: "https://www.pixiv.net/users/19133926"
 coverAlt: "使用JProfiler分析程序瓶颈 封面图"
 ---
 

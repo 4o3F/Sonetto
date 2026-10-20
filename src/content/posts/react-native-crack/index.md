@@ -8,6 +8,12 @@ tags:
   - "react-native"
   - "reverse"
 cover: "./cover.jpg"
+coverSource:
+  status: identified
+  title: "千反田える"
+  artist: "ttingdong"
+  url: "https://www.pixiv.net/artworks/76112680"
+  artistUrl: "https://www.pixiv.net/users/41751245"
 coverAlt: "React Native App分析记录 封面图"
 ---
 

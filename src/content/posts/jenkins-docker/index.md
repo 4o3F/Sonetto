@@ -9,6 +9,12 @@ tags:
   - "intern"
   - "jenkins"
 cover: "./cover.jpg"
+coverSource:
+  status: identified
+  title: "冬の魔法"
+  artist: "雨野"
+  url: "https://www.pixiv.net/artworks/95611419"
+  artistUrl: "https://www.pixiv.net/users/45476970"
 coverAlt: "Jenkins Docker部署与维护 封面图"
 ---
 

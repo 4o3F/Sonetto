@@ -7,6 +7,12 @@ tags:
   - "daily"
   - "dev"
 cover: "./cover.jpg"
+coverSource:
+  status: identified
+  title: "無題"
+  artist: "結城ゆき"
+  url: "https://www.pixiv.net/artworks/93052805"
+  artistUrl: "https://www.pixiv.net/users/16100742"
 coverAlt: "ICPC EC Final 2024 办赛总结&备忘录 封面图"
 ---
 
